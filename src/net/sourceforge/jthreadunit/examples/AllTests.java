@@ -13,6 +13,7 @@ public class AllTests
         testSuite.addTestSuite(FixedBoundedBufferTest.class);
         testSuite.addTestSuite(ReadWriteLockTest.class);
         testSuite.addTestSuite(SynchronizedBlockTest.class);
+        testSuite.addTestSuite(AssertionTest.class);
         return testSuite;
     }
 }
