@@ -29,13 +29,6 @@ public abstract class TestThread extends Thread
     private String initiatedAction = null;
     private volatile boolean killed = false;
 
-    public TestThread()
-    {
-        ThreadMBean mbean = ManagementFactory.getThreadMBean();
-        mbean.setThreadContentionMonitoringEnabled(true);
-        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-    }
-
     /**
      * Called to indicate that this thread should perform the named action
      * completely without blocking.
@@ -160,9 +153,17 @@ public abstract class TestThread extends Thread
         interrupt();
     }
 
+    public void start()
+    {
+        ThreadMBean mbean = ManagementFactory.getThreadMBean();
+        mbean.setThreadContentionMonitoringEnabled(true);
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        this.setPriority(Thread.MAX_PRIORITY);
+        super.start();
+    }
+
     public void run()
     {
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         try
         {
             while (!killed)
