@@ -240,15 +240,16 @@ public abstract class TestThread extends Thread
         return infos;
     }
 
-    private boolean anyRunning(ThreadMBean mbean, Thread[] threads, ThreadInfo[] infos)
+    private boolean anyRunning(
+            ThreadMBean mbean, Thread[] threads, ThreadInfo[] infos)
     {
-        int i = 0;
-        for (Thread thread : threads)
+        for (int i = 0; i < threads.length; i++)
         {
+            Thread thread = threads[i];
             if (thread != null)
             {
                 ThreadInfo info = mbean.getThreadInfo(thread.getId());
-                infos[i++] = info;
+                infos[i] = info;
                 if (info != null)
                 {
                     if (info.getThreadState() == ThreadState.NEW
@@ -286,51 +287,56 @@ public abstract class TestThread extends Thread
     {
         if (status != ACTION_COMPLETE)
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder message = new StringBuilder();
+
+            message.append(nameWithId(this.getName(), this.getId()));
+            message.append(" should not be blocked during \"");
+            message.append(initiatedAction);
+            message.append("\"");
+
             for (ThreadInfo info : infos)
             {
                 if (info != null)
                 {
-                    builder.append(" <");
-                    builder.append(info.getThreadName());
-                    builder.append("[");
-                    builder.append(info.getThreadId());
-                    builder.append("]: ");
-                    builder.append(info.getThreadState());
+                    message.append(" <");
+                    message.append(nameWithId(info.getThreadName(),
+                                              info.getThreadId()));
+                    message.append(": ");
+                    message.append(info.getThreadState());
+
                     if (info.getLockName() != null)
                     {
-                        builder.append(" on ");
+                        message.append(" on ");
+
                         if (info.getLockName().startsWith(
                                 this.getClass().getName() + "@"))
                         {
-                            builder.append("itself");
+                            message.append("itself");
                         }
                         else
                         {
-                            builder.append(info.getLockName());
+                            message.append(info.getLockName());
                         }
                     }
+
                     if (info.getLockOwnerName() != null)
                     {
-                        builder.append(" held by ");
-                        builder.append(info.getLockOwnerName());
-                        builder.append("[");
-                        builder.append(info.getLockOwnerId());
-                        builder.append("]");
+                        message.append(" held by ");
+                        message.append(nameWithId(info.getLockOwnerName(),
+                                                  info.getLockOwnerId()));
                     }
+
                     if (info.getStackTrace().length != 0)
                     {
-                        builder.append(" at ");
-                        builder.append(info.getStackTrace()[0].toString());
+                        message.append(" at ");
+                        message.append(info.getStackTrace()[0].toString());
                     }
-                    builder.append(">");
+
+                    message.append(">");
                 }
             }
-            throw new AssertionFailedError(
-                    this.getName() + "[" + this.getId() + "]"
-                    + " should not be blocked during \""
-                    + initiatedAction + "\""
-                    + builder.toString());
+
+            throw new AssertionFailedError(message.toString());
         }
     }
 
@@ -338,11 +344,20 @@ public abstract class TestThread extends Thread
     {
         if (status == ACTION_COMPLETE)
         {
-            throw new AssertionFailedError(
-                    this.getName() + "[" + this.getId() + "]"
-                    + " should be blocked during \""
-                    + initiatedAction + "\"");
+            StringBuilder message = new StringBuilder();
+
+            message.append(nameWithId(this.getName(), this.getId()));
+            message.append(" should be blocked during \"");
+            message.append(initiatedAction);
+            message.append("\"");
+
+            throw new AssertionFailedError(message.toString());
         }
+    }
+
+    private static String nameWithId(String name, long id)
+    {
+        return name + "[" + id + "]";
     }
 
     private void action() throws Throwable
