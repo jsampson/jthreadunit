@@ -1,0 +1,55 @@
+= test-drive rwlock
+
+= expectAction() inside action methods
+
+= put TestThread methods in breadth-first order
+
+= have TestThread throw IllegalStateException instead  of assertions in a few places
+
+= review synchronized usage in TestThread
+
+= making coding style consistent
+
+= rename *Tests to *Test
+
+= delete ThreadTests, but move isBlocked somewhere reasonable
+
+- remove unused imports
+
+- move examples to subpackage
+
+- find a way to test-drive fixing the notify/notifyAll problems in examples
+  <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
+
+- if exception is thrown from action, rethrow it from assertComplete (instead of calling printStackTrace)
+
+.......................
+    public boolean isBlocked(Thread thread)
+    {
+        ThreadMBean threads = ManagementFactory.getThreadMBean();
+        assertTrue(threads.isThreadContentionMonitoringEnabled());
+        while (true)
+        {
+            Thread.yield();
+            ThreadInfo info = threads.getThreadInfo(thread.getId());
+            if (info == null)
+            {
+                return false;
+            }
+            ThreadState state = info.getThreadState();
+            if (state == ThreadState.NEW || state == ThreadState.RUNNING)
+            {
+                continue;
+            }
+            else if (state == ThreadState.BLOCKED
+                    || state == ThreadState.WAITING
+                    || state == ThreadState.TIMED_WAITING)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
