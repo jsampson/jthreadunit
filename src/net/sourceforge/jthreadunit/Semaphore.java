@@ -22,27 +22,17 @@ public class Semaphore
         this(1);
     }
 
-    public void down(long millis) throws InterruptedException
+    public void down() throws InterruptedException
     {
         synchronized (lock)
         {
             if (currentState == 0)
             {
-                lock.wait(millis);
-
-                if (currentState == 0)
-                {
-                    throw new InterruptedException("Wait time exceeded");
-                }
+                lock.wait();
             }
 
             currentState--;
         }
-    }
-
-    public void down() throws InterruptedException
-    {
-        down(0L);
     }
 
     public void up()

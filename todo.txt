@@ -16,7 +16,7 @@
 
 = in ReadWriteLock, decrement correctly when waiting writer is interrupted
 
-- get rid of now-unused timed-wait stuff in Semaphore
+= get rid of now-unused timed-wait stuff in Semaphore
 
 - get rid of redundent lock object in Semaphore
 
