@@ -33,6 +33,11 @@ public class ReadWriteLock
                 wait();
             }
         }
+        catch (InterruptedException interrupted)
+        {
+            notifyAll();
+            throw interrupted;
+        }
         finally
         {
             waitingWriters--;
