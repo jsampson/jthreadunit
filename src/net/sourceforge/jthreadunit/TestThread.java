@@ -108,6 +108,21 @@ public abstract class TestThread extends Thread
     }
 
     /**
+     * Called from arbitrary code to mark the current action as complete and
+     * wait for the next action without returning from the first action method.
+     * Equivalent to calling {@link #expectAction(String)} directly from an
+     * action method, unless the current thread is not a TestThread, in which
+     * case does nothing.
+     */
+    public static void checkpoint(String actionName) throws InterruptedException
+    {
+        if (Thread.currentThread() instanceof TestThread)
+        {
+            ((TestThread) Thread.currentThread()).expectAction(actionName);
+        }
+    }
+
+    /**
      * Kill this thread. Sets a flag and interrupts the thread, as an
      * alternative to the deprecated {@link Thread#stop()}.
      */

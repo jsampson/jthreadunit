@@ -32,7 +32,11 @@
 
 - discuss code review techniques: notify, synchronized, etc.
 
-- copy BoundedBuffer to BrokenBoundedBuffer
+= copy BoundedBuffer to BrokenBoundedBuffer
+
+- make checkpoint optional (so don't always have to "perform" it)
+
+- introduce FixedBoundedBuffer
 
 - test-drive fixing the notify/notifyAll problems in examples using
   "checkpoint" method

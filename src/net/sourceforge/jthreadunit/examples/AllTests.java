@@ -10,6 +10,7 @@ public class AllTests
         TestSuite testSuite = new TestSuite();
         testSuite.addTestSuite(SemaphoreTest.class);
         testSuite.addTestSuite(BoundedBufferTest.class);
+        testSuite.addTestSuite(BrokenBoundedBufferTest.class);
         testSuite.addTestSuite(ReadWriteLockTest.class);
         testSuite.addTestSuite(SynchronizedBlockTest.class);
         return testSuite;
