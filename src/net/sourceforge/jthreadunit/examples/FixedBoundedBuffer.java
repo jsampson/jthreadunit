@@ -1,16 +1,18 @@
 package net.sourceforge.jthreadunit.examples;
 
-public class BoundedBuffer
+import net.sourceforge.jthreadunit.TestThread;
+
+public class FixedBoundedBuffer
 {
     private Object[] buffer;
     private int putAt, takeAt, occupied;
 
-    public BoundedBuffer()
+    public FixedBoundedBuffer()
     {
         this(4);
     }
 
-    public BoundedBuffer(int capacity)
+    public FixedBoundedBuffer(int capacity)
     {
         buffer = new Object[capacity];
     }
@@ -21,6 +23,7 @@ public class BoundedBuffer
         {
             wait();
         }
+        TestThread.checkpoint("putNotify");
         notify();
         ++occupied;
         putAt %= buffer.length;
@@ -33,7 +36,8 @@ public class BoundedBuffer
         {
             wait();
         }
-        notify();
+        TestThread.checkpoint("takeNotify");
+        notifyAll();
         --occupied;
         takeAt %= buffer.length;
         return buffer[takeAt++];

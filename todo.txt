@@ -36,7 +36,9 @@
 
 x make checkpoint optional (so don't always have to "perform" it)
 
-- introduce FixedBoundedBuffer
+= introduce FixedBoundedBuffer
+
+- eliminate duplication between BrokenBoundedBuffer and FixedBoundedBuffer
 
 - test-drive fixing the notify/notifyAll problems in examples using
   "checkpoint" method

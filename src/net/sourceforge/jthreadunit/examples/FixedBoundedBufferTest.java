@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 
 import net.sourceforge.jthreadunit.TestThread;
 
-public class BoundedBufferTest extends TestCase
+public class FixedBoundedBufferTest extends TestCase
 {
-    private BoundedBuffer buffer = new BoundedBuffer();
+    private FixedBoundedBuffer buffer = new FixedBoundedBuffer();
 
     public void testPutTake() throws InterruptedException
     {
@@ -33,8 +33,8 @@ public class BoundedBufferTest extends TestCase
         thread1.start();
         thread2.start();
         thread1.actionShouldBlock("take");
-        thread2.performAction("put");
-        thread1.completeBlockedAction();
+        thread2.performActions("put", "putNotify");
+        thread1.completeBlockedActionWithActions("takeNotify");
         thread1.kill();
         thread2.kill();
     }
@@ -53,10 +53,10 @@ public class BoundedBufferTest extends TestCase
         thread4.start();
         thread1.actionShouldBlock("take");
         thread2.actionShouldBlock("take");
-        thread3.performAction("put");
-        thread4.performAction("put");
-        thread1.completeBlockedAction();
-        thread2.completeBlockedAction();
+        thread3.performActions("put", "putNotify");
+        thread1.completeBlockedActionWithActions("takeNotify");
+        thread4.performActions("put", "putNotify");
+        thread2.completeBlockedActionWithActions("takeNotify");
         thread1.kill();
         thread2.kill();
         thread3.kill();
@@ -75,27 +75,27 @@ public class BoundedBufferTest extends TestCase
         thread2.start();
         thread3.start();
 
-        thread1.performAction("put");
-        thread1.performAction("put");
-        thread1.performAction("put");
-        thread1.performAction("put");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
         thread1.actionShouldBlock("put");
         thread2.actionShouldBlock("put");
 
-        thread3.performAction("take");
-        thread3.performAction("take");
+        thread3.performActions("take", "takeNotify");
+        thread1.completeBlockedActionWithActions("putNotify");
 
-        thread1.completeBlockedAction();
-        thread2.completeBlockedAction();
+        thread3.performActions("take", "takeNotify");
+        thread2.completeBlockedActionWithActions("putNotify");
 
         thread1.kill();
         thread2.kill();
         thread3.kill();
     }
 
-    public void testTheBug() // not nearly yet
+    public void testTheBug()
     {
-        buffer = new BoundedBuffer(1);
+        buffer = new FixedBoundedBuffer(1);
 
         Object object = new Object();
 
@@ -113,10 +113,19 @@ public class BoundedBufferTest extends TestCase
         consumer2.actionShouldBlock("take");
 
         producer1.performAction("put");
-        consumer1.completeBlockedAction();
+        producer2.actionShouldBlock("put");
+        producer1.performAction("putNotify");
 
-        producer2.performAction("put");
-        consumer2.completeBlockedAction();
+        consumer2.assertStillBlocked();
+        producer2.assertStillBlocked();
+
+        consumer1.completeBlockedActionWithActions("takeNotify");
+
+        consumer2.assertStillBlocked();
+
+        producer2.completeBlockedActionWithActions("putNotify");
+
+        consumer2.completeBlockedActionWithActions("takeNotify");
 
         consumer1.kill();
         consumer2.kill();
