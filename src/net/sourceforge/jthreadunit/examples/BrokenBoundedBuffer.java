@@ -2,7 +2,7 @@ package net.sourceforge.jthreadunit.examples;
 
 import net.sourceforge.jthreadunit.TestThread;
 
-public class BrokenBoundedBuffer
+public class BrokenBoundedBuffer implements BoundedBuffer
 {
     private Object[] buffer;
     private int putAt, takeAt, occupied;
