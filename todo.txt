@@ -24,7 +24,7 @@
   SemaphoreTest#testThreeThreadsOneResource, since we're presuming that the
   order is deterministic until we learn otherwise
 
-- remove unused imports
+= remove unused imports
 
 - move examples to subpackage
 

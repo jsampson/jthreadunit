@@ -30,8 +30,8 @@ public abstract class TestThread extends Thread
 
     public TestThread()
     {
-        ThreadMBean threads = ManagementFactory.getThreadMBean();
-        threads.setThreadContentionMonitoringEnabled(true);
+        ThreadMBean mbean = ManagementFactory.getThreadMBean();
+        mbean.setThreadContentionMonitoringEnabled(true);
     }
 
     /**
@@ -146,13 +146,13 @@ public abstract class TestThread extends Thread
 
     private void letRun()
     {
-        ThreadMBean threads = ManagementFactory.getThreadMBean();
-        assert threads.isThreadContentionMonitoringEnabled();
+        ThreadMBean mbean = ManagementFactory.getThreadMBean();
+        assert mbean.isThreadContentionMonitoringEnabled();
         ThreadInfo info;
         do
         {
             Thread.yield();
-            info = threads.getThreadInfo(this.getId());
+            info = mbean.getThreadInfo(this.getId());
         }
         while (info != null
                 && (info.getThreadState() == ThreadState.NEW

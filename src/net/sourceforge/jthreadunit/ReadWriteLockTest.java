@@ -1,6 +1,5 @@
 package net.sourceforge.jthreadunit;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 public class ReadWriteLockTest extends TestCase
