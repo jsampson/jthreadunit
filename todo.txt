@@ -18,7 +18,7 @@
 
 = get rid of now-unused timed-wait stuff in Semaphore
 
-- get rid of redundent lock object in Semaphore
+= get rid of redundent lock object in Semaphore
 
 = get rid of the try/catch to deal with different ordering in
   SemaphoreTest#testThreeThreadsOneResource, since we're presuming that the

@@ -2,7 +2,6 @@ package net.sourceforge.jthreadunit;
 
 public class Semaphore
 {
-    private Object lock;
     private int currentState;
 
     public Semaphore(int initialState)
@@ -13,42 +12,27 @@ public class Semaphore
                     "Semaphore initial state must not be negative");
         }
 
-        this.lock = new Object();
         this.currentState = initialState;
     }
 
-    public Semaphore()
+    public synchronized void down() throws InterruptedException
     {
-        this(1);
+        if (currentState == 0)
+        {
+            wait();
+        }
+
+        currentState--;
     }
 
-    public void down() throws InterruptedException
+    public synchronized void up()
     {
-        synchronized (lock)
-        {
-            if (currentState == 0)
-            {
-                lock.wait();
-            }
-
-            currentState--;
-        }
+        currentState++;
+        notify();
     }
 
-    public void up()
+    public synchronized int state()
     {
-        synchronized (lock)
-        {
-            currentState++;
-            lock.notify();
-        }
-    }
-
-    public int state()
-    {
-        synchronized (lock)
-        {
-            return currentState;
-        }
+        return currentState;
     }
 }
