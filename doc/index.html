@@ -101,6 +101,50 @@
 
         <hr />
 
+        <h2>Code Review</h2>
+
+        <p>Another caveat is that JThreadUnit does not help to uncover problems
+        with unsynchronized access to shared variables. JThreadUnit is based on
+        carefully choreographing locking, waiting, and notifying actions to
+        make sure that mutual exclusion and signalling are happening as
+        expected. This approach can catch deadlocks and certain kinds of race
+        conditions as well.</p>
+
+        <p>However, because <tt>TestThread</tt> is synchronized itself, every
+        test action is surrounded by memory barriers, causing all variables to
+        be flushed to main memory. Therefore JThreadUnit actually hides
+        potential problems with memory access. The <a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">double-checked locking</a>
+        idiom is an all-too-common example of this kind of error.</p>
+
+        <p>Short of simulating a multi-processor machine, the only way to find
+        memory access problems is static code analysis, by peer code review
+        with the aid of static analysis tools.</p>
+
+        <p>For example, any code that violates any of these rules requires
+        very close scrutiny:</p>
+
+        <ol>
+            <li>Never read or write a shared variable outside of a synchronized
+            block.</li>
+            <li>Always surround <tt>wait()</tt> with a while-loop.</li>
+            <li>Always use <tt>notifyAll()</tt> instead of <tt>notify()</tt>.</li>
+        </ol>
+
+        <p>Tools such as <a href="http://www.cs.umd.edu/~pugh/java/bugs/">FindBugs</a>
+        and <a href="http://artho.com/jlint/index.shtml">JLint</a> perform
+        static analysis to automatically detect potential problems with
+        unsynchronized access to shared variables, deadlocks, and race
+        conditions (as well as other classes of common bugs).</p>
+
+        <p>We should also watch <a href="http://www.cs.iastate.edu/~leavens/JML/index.shtml">JML</a>
+        and related tools such as <a href="http://krakatoa.lri.fr/">Krakatoa</a>
+        and look forward to being able to formally prove our multithreaded Java
+        code.</p>
+
+        <hr />
+
+        <p><a href="http://sourceforge.net/project/showfiles.php?group_id=103475">Download</a></p>
+
         <p><a href="http://sourceforge.net/projects/jthreadunit">Project Page</a></p>
 
         <p><a href="http://cvs.sourceforge.net/viewcvs.py/jthreadunit/jthreadunit/">Browse CVS</a></p>
