@@ -91,30 +91,15 @@ public class SemaphoreTest extends TestCase
         thread3.actionShouldBlock("down");
         thread1.performAction("up");
 
-        SemaphoreTestThread first;
-        SemaphoreTestThread other;
-
-        try
-        {
-            thread2.completeBlockedAction();
-            first = thread2;
-            other = thread3;
-        }
-        catch (AssertionFailedError okay)
-        {
-            thread3.completeBlockedAction();
-            first = thread3;
-            other = thread2;
-        }
-
-        other.assertStillBlocked();
+        thread2.completeBlockedAction();
+        thread3.assertStillBlocked();
         assertEquals(0, semaphore.state());
 
-        first.performAction("up");
-        other.completeBlockedAction();
+        thread2.performAction("up");
+        thread3.completeBlockedAction();
         assertEquals(0, semaphore.state());
 
-        other.performAction("up");
+        thread3.performAction("up");
         assertEquals(1, semaphore.state());
     }
 

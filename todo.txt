@@ -16,6 +16,14 @@
 
 = in ReadWriteLock, decrement correctly when waiting writer is interrupted
 
+- get rid of now-unused timed-wait stuff in Semaphore
+
+- get rid of redundent lock object in Semaphore
+
+= get rid of the try/catch to deal with different ordering in
+  SemaphoreTest#testThreeThreadsOneResource, since we're presuming that the
+  order is deterministic until we learn otherwise
+
 - remove unused imports
 
 - move examples to subpackage
@@ -31,6 +39,8 @@
 
 - if InterruptedException is thrown from action, allow that fact to
   be asserted
+
+- consider how to test timed-wait stuff in Semaphore
 
 .......................
     public boolean isBlocked(Thread thread)
