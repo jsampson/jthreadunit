@@ -15,9 +15,10 @@ public class SemaphoreTest extends TestCase
     {
         semaphore = new Semaphore(initialState);
 
-        thread1 = new SemaphoreTestThread();
-        thread2 = new SemaphoreTestThread();
-        thread3 = new SemaphoreTestThread();
+        ThreadGroup group = new ThreadGroup(getName());
+        thread1 = new SemaphoreTestThread(group, "thread1");
+        thread2 = new SemaphoreTestThread(group, "thread2");
+        thread3 = new SemaphoreTestThread(group, "thread3");
 
         thread1.start();
         thread2.start();
@@ -173,14 +174,11 @@ public class SemaphoreTest extends TestCase
         }
     }
 
-    private ThreadGroup threadGroup = new ThreadGroup("SemaphoreTest");
-    private int threadCount = 0;
-
     public class SemaphoreTestThread extends TestThread
     {
-        public SemaphoreTestThread()
+        public SemaphoreTestThread(ThreadGroup group, String name)
         {
-            super(threadGroup, "SemaphoreTestThread-" + (++threadCount));
+            super(group, name);
         }
 
         public void doDown() throws InterruptedException

@@ -16,10 +16,11 @@ public class ReadWriteLockTest extends TestCase
     {
         lock = new ReadWriteLock();
 
-        thread1 = new ReadWriteLockTestThread();
-        thread2 = new ReadWriteLockTestThread();
-        thread3 = new ReadWriteLockTestThread();
-        thread4 = new ReadWriteLockTestThread();
+        ThreadGroup group = new ThreadGroup(getName());
+        thread1 = new ReadWriteLockTestThread(group, "thread1");
+        thread2 = new ReadWriteLockTestThread(group, "thread2");
+        thread3 = new ReadWriteLockTestThread(group, "thread3");
+        thread4 = new ReadWriteLockTestThread(group, "thread4");
 
         thread1.start();
         thread2.start();
@@ -157,14 +158,11 @@ public class ReadWriteLockTest extends TestCase
         thread3.performAction("releaseRead");
     }
 
-    private ThreadGroup threadGroup = new ThreadGroup("ReadWriteLockTest");
-    private int threadCount = 0;
-
     public class ReadWriteLockTestThread extends TestThread
     {
-        public ReadWriteLockTestThread()
+        public ReadWriteLockTestThread(ThreadGroup group, String name)
         {
-            super(threadGroup, "ReadWriteLockTestThread-" + (++threadCount));
+            super(group, name);
         }
 
         public void doAcquireRead() throws InterruptedException

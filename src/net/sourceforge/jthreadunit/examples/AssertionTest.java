@@ -11,8 +11,9 @@ public class AssertionTest extends TestCase
 
     public void testAssertShouldNotBeBlocked() throws Exception
     {
-        TestThread thread1 = new AssertionTestThread();
-        TestThread thread2 = new AssertionTestThread();
+        ThreadGroup group = new ThreadGroup("testAssertShouldNotBeBlocked");
+        TestThread thread1 = new AssertionTestThread(group, "thread1");
+        TestThread thread2 = new AssertionTestThread(group, "thread2");
         thread1.start();
         thread2.start();
 
@@ -26,15 +27,13 @@ public class AssertionTest extends TestCase
         catch (AssertionFailedError good)
         {
             assertEquals(
-                    "AssertionTestThread-2[" + thread2.getId()
+                    "thread2[" + thread2.getId()
                     + "] should not be blocked during \"enter\" "
-                    + "<AssertionTestThread-1[" + thread1.getId()
-                    + "]: Waiting on itself> "
-                    + "<AssertionTestThread-2[" + thread2.getId()
+                    + "<thread1[" + thread1.getId() + "]: Waiting on itself> "
+                    + "<thread2[" + thread2.getId()
                     + "]: Blocked on java.lang.Object@"
                     + Integer.toHexString(lock.hashCode())
-                    + " held by AssertionTestThread-1[" + thread1.getId()
-                    + "]>",
+                    + " held by thread1[" + thread1.getId() + "]>",
                     good.getMessage());
         }
 
@@ -44,7 +43,8 @@ public class AssertionTest extends TestCase
 
     public void testAssertShouldBeBlocked() throws Exception
     {
-        TestThread thread = new AssertionTestThread();
+        ThreadGroup group = new ThreadGroup("testAssertShouldBeBlocked");
+        TestThread thread = new AssertionTestThread(group, "thread");
         thread.start();
 
         try
@@ -55,7 +55,7 @@ public class AssertionTest extends TestCase
         catch (AssertionFailedError good)
         {
             assertEquals(
-                    "AssertionTestThread-1[" + thread.getId()
+                    "thread[" + thread.getId()
                     + "] should be blocked during \"enter\"",
                     good.getMessage());
         }
@@ -63,15 +63,11 @@ public class AssertionTest extends TestCase
         thread.kill();
     }
 
-    private ThreadGroup threadGroup = new ThreadGroup("AssertionTest");
-    private int threadCount = 0;
-
     public class AssertionTestThread extends TestThread
     {
-        public AssertionTestThread()
+        public AssertionTestThread(ThreadGroup group, String name)
         {
-            super(threadGroup,
-                    "AssertionTestThread-" + (++threadCount));
+            super(group, name);
         }
 
         public void doEnter() throws InterruptedException

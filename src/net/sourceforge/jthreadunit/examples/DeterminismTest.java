@@ -13,11 +13,18 @@ public class DeterminismTest extends TestCase
     {
         ReadWriteLock lock = new ReadWriteLock();
         Throwable bad;
+        int i;
+
+        public CrazyThread(int i)
+        {
+            this.i = i;
+        }
 
         public void run()
         {
-            CrazyTestThread thread1 = new CrazyTestThread();
-            CrazyTestThread thread2 = new CrazyTestThread();
+            ThreadGroup group = new ThreadGroup("testCrazy-" + i);
+            CrazyTestThread thread1 = new CrazyTestThread(group, "thread1");
+            CrazyTestThread thread2 = new CrazyTestThread(group, "thread2");
 
             thread1.start();
             thread2.start();
@@ -49,14 +56,11 @@ public class DeterminismTest extends TestCase
             }
         }
 
-        private ThreadGroup threadGroup = new ThreadGroup("DeterminismTest");
-        private int threadCount = 0;
-
         public class CrazyTestThread extends TestThread
         {
-            public CrazyTestThread()
+            public CrazyTestThread(ThreadGroup group, String name)
             {
-                super(threadGroup, "CrazyTestThread-" + (++threadCount));
+                super(group, name);
             }
 
             public void doAcquireWrite() throws InterruptedException
@@ -77,7 +81,7 @@ public class DeterminismTest extends TestCase
 
         for (int i = 0; i < THREAD_COUNT; i++)
         {
-            crazies[i] = new CrazyThread();
+            crazies[i] = new CrazyThread(i);
         }
 
         for (CrazyThread crazy : crazies)

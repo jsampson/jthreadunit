@@ -10,7 +10,8 @@ public class SynchronizedBlockTest extends TestCase
 
     public void testOneThread() throws Exception
     {
-        TestThread thread1 = new SynchronizedBlockTestThread();
+        ThreadGroup group = new ThreadGroup("testOneThread");
+        TestThread thread1 = new SynchronizedBlockTestThread(group, "thread1");
         thread1.start();
 
         thread1.performAction("enter");
@@ -21,8 +22,9 @@ public class SynchronizedBlockTest extends TestCase
 
     public void testTwoThreads() throws Exception
     {
-        TestThread thread1 = new SynchronizedBlockTestThread();
-        TestThread thread2 = new SynchronizedBlockTestThread();
+        ThreadGroup group = new ThreadGroup("testTwoThreads");
+        TestThread thread1 = new SynchronizedBlockTestThread(group, "thread1");
+        TestThread thread2 = new SynchronizedBlockTestThread(group, "thread2");
         thread1.start();
         thread2.start();
 
@@ -36,15 +38,11 @@ public class SynchronizedBlockTest extends TestCase
         thread2.kill();
     }
 
-    private ThreadGroup threadGroup = new ThreadGroup("SynchronizedBlockTest");
-    private int threadCount = 0;
-
     public class SynchronizedBlockTestThread extends TestThread
     {
-        public SynchronizedBlockTestThread()
+        public SynchronizedBlockTestThread(ThreadGroup group, String name)
         {
-            super(threadGroup,
-                    "SynchronizedBlockTestThread-" + (++threadCount));
+            super(group, name);
         }
 
         public void doEnter() throws InterruptedException

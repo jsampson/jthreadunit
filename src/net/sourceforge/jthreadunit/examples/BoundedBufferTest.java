@@ -30,8 +30,9 @@ public abstract class BoundedBufferTest extends TestCase
     public void testTwoThreads() throws Exception
     {
         Object object = new Object();
-        TestThread thread1 = new BufferTestThread(object);
-        TestThread thread2 = new BufferTestThread(object);
+        ThreadGroup group = new ThreadGroup("testTwoThreads");
+        TestThread thread1 = new BufferTestThread(group, "thread1", object);
+        TestThread thread2 = new BufferTestThread(group, "thread2", object);
         thread1.start();
         thread2.start();
         thread1.actionShouldBlock("take");
@@ -45,10 +46,11 @@ public abstract class BoundedBufferTest extends TestCase
     {
         Object object1 = new Object();
         Object object2 = new Object();
-        TestThread thread1 = new BufferTestThread(object1);
-        TestThread thread2 = new BufferTestThread(object2);
-        TestThread thread3 = new BufferTestThread(object1);
-        TestThread thread4 = new BufferTestThread(object2);
+        ThreadGroup group = new ThreadGroup("testTakeTwoPutTwo");
+        TestThread thread1 = new BufferTestThread(group, "thread1", object1);
+        TestThread thread2 = new BufferTestThread(group, "thread2", object2);
+        TestThread thread3 = new BufferTestThread(group, "thread3", object1);
+        TestThread thread4 = new BufferTestThread(group, "thread4", object2);
         thread1.start();
         thread2.start();
         thread3.start();
@@ -69,9 +71,10 @@ public abstract class BoundedBufferTest extends TestCase
     {
         Object object = new Object();
 
-        TestThread thread1 = new BufferTestThread(object);
-        TestThread thread2 = new BufferTestThread(object);
-        TestThread thread3 = new BufferTestThread(object);
+        ThreadGroup group = new ThreadGroup("testPutSix");
+        TestThread thread1 = new BufferTestThread(group, "thread1", object);
+        TestThread thread2 = new BufferTestThread(group, "thread2", object);
+        TestThread thread3 = new BufferTestThread(group, "thread3", object);
 
         thread1.start();
         thread2.start();
@@ -95,16 +98,13 @@ public abstract class BoundedBufferTest extends TestCase
         thread3.kill();
     }
 
-    private ThreadGroup threadGroup = new ThreadGroup("BoundedBufferTest");
-    private int threadCount = 0;
-
     public class BufferTestThread extends TestThread
     {
         private Object object;
 
-        public BufferTestThread(Object object)
+        public BufferTestThread(ThreadGroup group, String name, Object object)
         {
-            super(threadGroup, "BufferTestThread-" + (++threadCount));
+            super(group, name);
             this.object = object;
         }
 

@@ -15,10 +15,11 @@ public class BrokenBoundedBufferTest extends BoundedBufferTest
 
         Object object = new Object();
 
-        TestThread consumer1 = new BufferTestThread(object);
-        TestThread consumer2 = new BufferTestThread(object);
-        TestThread producer1 = new BufferTestThread(object);
-        TestThread producer2 = new BufferTestThread(object);
+        ThreadGroup group = new ThreadGroup("testTheBug-broken");
+        TestThread consumer1 = new BufferTestThread(group, "consumer1", object);
+        TestThread consumer2 = new BufferTestThread(group, "consumer2", object);
+        TestThread producer1 = new BufferTestThread(group, "producer1", object);
+        TestThread producer2 = new BufferTestThread(group, "producer2", object);
 
         consumer1.start();
         consumer2.start();
