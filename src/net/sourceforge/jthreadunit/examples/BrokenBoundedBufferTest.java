@@ -33,10 +33,8 @@ public class BrokenBoundedBufferTest extends TestCase
         thread1.start();
         thread2.start();
         thread1.actionShouldBlock("take");
-        thread2.performAction("put");
-        thread2.performAction("putNotify");
-        thread1.completeBlockedAction();
-        thread1.performAction("takeNotify");
+        thread2.performActions("put", "putNotify");
+        thread1.completeBlockedActionWithActions("takeNotify");
         thread1.kill();
         thread2.kill();
     }
@@ -55,14 +53,10 @@ public class BrokenBoundedBufferTest extends TestCase
         thread4.start();
         thread1.actionShouldBlock("take");
         thread2.actionShouldBlock("take");
-        thread3.performAction("put");
-        thread3.performAction("putNotify");
-        thread1.completeBlockedAction();
-        thread1.performAction("takeNotify");
-        thread4.performAction("put");
-        thread4.performAction("putNotify");
-        thread2.completeBlockedAction();
-        thread2.performAction("takeNotify");
+        thread3.performActions("put", "putNotify");
+        thread1.completeBlockedActionWithActions("takeNotify");
+        thread4.performActions("put", "putNotify");
+        thread2.completeBlockedActionWithActions("takeNotify");
         thread1.kill();
         thread2.kill();
         thread3.kill();
@@ -81,26 +75,18 @@ public class BrokenBoundedBufferTest extends TestCase
         thread2.start();
         thread3.start();
 
-        thread1.performAction("put");
-        thread1.performAction("putNotify");
-        thread1.performAction("put");
-        thread1.performAction("putNotify");
-        thread1.performAction("put");
-        thread1.performAction("putNotify");
-        thread1.performAction("put");
-        thread1.performAction("putNotify");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
+        thread1.performActions("put", "putNotify");
         thread1.actionShouldBlock("put");
         thread2.actionShouldBlock("put");
 
-        thread3.performAction("take");
-        thread3.performAction("takeNotify");
-        thread1.completeBlockedAction();
-        thread1.performAction("putNotify");
+        thread3.performActions("take", "takeNotify");
+        thread1.completeBlockedActionWithActions("putNotify");
 
-        thread3.performAction("take");
-        thread3.performAction("takeNotify");
-        thread2.completeBlockedAction();
-        thread2.performAction("putNotify");
+        thread3.performActions("take", "takeNotify");
+        thread2.completeBlockedActionWithActions("putNotify");
 
         thread1.kill();
         thread2.kill();
@@ -133,8 +119,7 @@ public class BrokenBoundedBufferTest extends TestCase
         consumer2.assertStillBlocked();
         producer2.assertStillBlocked();
 
-        consumer1.completeBlockedAction();
-        consumer1.performAction("takeNotify");
+        consumer1.completeBlockedActionWithActions("takeNotify");
 
         consumer2.assertStillBlocked();
         producer2.assertStillBlocked();

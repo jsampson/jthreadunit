@@ -13,8 +13,10 @@
 
     <target name="build" depends="clean">
         <mkdir dir="bin" />
-        <javac srcdir="src" destdir="bin" debug="yes"
-               classpathref="buildpath" />
+        <javac srcdir="src" destdir="bin" debug="yes" source="1.5"
+               classpathref="buildpath">
+            <compilerarg value="-Xlint:unchecked" />
+        </javac>
     </target>
 
     <target name="clean">

@@ -34,7 +34,7 @@
 
 = copy BoundedBuffer to BrokenBoundedBuffer
 
-- make checkpoint optional (so don't always have to "perform" it)
+x make checkpoint optional (so don't always have to "perform" it)
 
 - introduce FixedBoundedBuffer
 

@@ -49,6 +49,20 @@ public abstract class TestThread extends Thread
     }
 
     /**
+     * Perform several actions. Equivalent to calling
+     * {@link #performAction(String)} once for each of the given actions.
+     * This is convenient when the code being tested contains
+     * {@link #checkpoint(String)} calls.
+     */
+    public void performActions(String... actionNames)
+    {
+        for (String actionName : actionNames)
+        {
+            performAction(actionName);
+        }
+    }
+
+    /**
      * Called to indicate that this thread should initiate the named action
      * but expect to block before completing it.
      * <p>
@@ -72,6 +86,19 @@ public abstract class TestThread extends Thread
     {
         letRun();
         assertComplete();
+    }
+
+    /**
+     * Complete one action and perform several more. Equivalent to calling
+     * {@link #completeBlockedAction()} once followed by calling
+     * {@link #performAction(String)} once for each of the given actions.
+     * This is convenient when the code being tested contains
+     * {@link #checkpoint(String)} calls.
+     */
+    public void completeBlockedActionWithActions(String... actionNames)
+    {
+        completeBlockedAction();
+        performActions(actionNames);
     }
 
     /**
