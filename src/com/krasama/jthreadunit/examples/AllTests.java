@@ -1,4 +1,4 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

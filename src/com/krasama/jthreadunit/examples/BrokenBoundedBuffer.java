@@ -1,18 +1,18 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
-import net.sourceforge.jthreadunit.TestThread;
+import com.krasama.jthreadunit.TestThread;
 
-public class FixedBoundedBuffer implements BoundedBuffer
+public class BrokenBoundedBuffer implements BoundedBuffer
 {
     private Object[] buffer;
     private int putAt, takeAt, occupied;
 
-    public FixedBoundedBuffer()
+    public BrokenBoundedBuffer()
     {
         this(4);
     }
 
-    public FixedBoundedBuffer(int capacity)
+    public BrokenBoundedBuffer(int capacity)
     {
         buffer = new Object[capacity];
     }
@@ -37,7 +37,7 @@ public class FixedBoundedBuffer implements BoundedBuffer
             wait();
         }
         TestThread.checkpoint("takeNotify");
-        notifyAll();
+        notify();
         --occupied;
         takeAt %= buffer.length;
         return buffer[takeAt++];

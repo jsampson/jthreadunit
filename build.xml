@@ -1,6 +1,6 @@
 <project default="test">
 
-    <property name="version" value="0.2" />
+    <property name="version" value="0.3" />
 
     <path id="buildpath">
         <fileset dir="lib">
@@ -28,27 +28,27 @@
     <target name="test" depends="build">
         <java classname="junit.textui.TestRunner" fork="yes"
               classpathref="runpath" failonerror="true">
-            <arg value="net.sourceforge.jthreadunit.examples.AllTests" />
+            <arg value="com.krasama.jthreadunit.examples.AllTests" />
         </java>
     </target>
 
     <target name="slowtest" depends="build">
         <java classname="junit.textui.TestRunner" fork="yes"
               classpathref="runpath" failonerror="true">
-            <arg value="net.sourceforge.jthreadunit.examples.DeterminismTest" />
+            <arg value="com.krasama.jthreadunit.examples.DeterminismTest" />
         </java>
     </target>
 
     <target name="guitest" depends="build">
         <java classname="junit.swingui.TestRunner" fork="yes"
               classpathref="runpath" failonerror="true">
-            <arg value="net.sourceforge.jthreadunit.examples.AllTests" />
+            <arg value="com.krasama.jthreadunit.examples.AllTests" />
         </java>
     </target>
 
     <target name="doc">
         <delete dir="doc/javadoc" />
-        <javadoc packagenames="net.sourceforge.jthreadunit" source="1.5"
+        <javadoc packagenames="com.krasama.jthreadunit" source="1.5"
                  classpathref="buildpath"
                  sourcepath="src" destdir="doc/javadoc">
             <link href="http://java.sun.com/j2se/1.5.0/docs/api/" />

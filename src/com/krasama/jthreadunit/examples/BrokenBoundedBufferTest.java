@@ -1,6 +1,6 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
-import net.sourceforge.jthreadunit.TestThread;
+import com.krasama.jthreadunit.TestThread;
 
 public class BrokenBoundedBufferTest extends BoundedBufferTest
 {

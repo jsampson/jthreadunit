@@ -1,4 +1,4 @@
-package net.sourceforge.jthreadunit;
+package com.krasama.jthreadunit;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;

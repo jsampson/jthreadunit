@@ -1,4 +1,4 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
 public interface BoundedBuffer
 {

@@ -1,8 +1,8 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
 import junit.framework.TestCase;
 
-import net.sourceforge.jthreadunit.TestThread;
+import com.krasama.jthreadunit.TestThread;
 
 public class SynchronizedBlockTest extends TestCase
 {

@@ -1,9 +1,9 @@
-package net.sourceforge.jthreadunit.examples;
+package com.krasama.jthreadunit.examples;
 
 import junit.framework.TestCase;
 import junit.framework.AssertionFailedError;
 
-import net.sourceforge.jthreadunit.TestThread;
+import com.krasama.jthreadunit.TestThread;
 
 public class AssertionTest extends TestCase
 {

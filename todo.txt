@@ -68,4 +68,6 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - rewrite overview on home page
 
+- link to dist files from home page
+
 - consider how to test timed-wait stuff in Semaphore
