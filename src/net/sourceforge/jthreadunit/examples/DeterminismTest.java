@@ -49,8 +49,16 @@ public class DeterminismTest extends TestCase
             }
         }
 
+        private ThreadGroup threadGroup = new ThreadGroup("DeterminismTest");
+        private int threadCount = 0;
+
         public class CrazyTestThread extends TestThread
         {
+            public CrazyTestThread()
+            {
+                super(threadGroup, "CrazyTestThread-" + (++threadCount));
+            }
+
             public void doAcquireWrite() throws InterruptedException
             {
                 lock.acquireWrite();

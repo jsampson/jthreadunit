@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 
 /**
  * A thread that runs in an endless loop performing actions. A controlling
@@ -33,6 +34,11 @@ public abstract class TestThread extends Thread
     private String initiatedAction = null;
     private int status = ACTION_COMPLETE;
     private volatile boolean killed = false;
+
+    public TestThread(ThreadGroup group, String name)
+    {
+        super(group, name);
+    }
 
     /**
      * Called to indicate that this thread should perform the named action
@@ -84,8 +90,8 @@ public abstract class TestThread extends Thread
      */
     public void completeBlockedAction()
     {
-        letRun();
-        assertComplete();
+        ThreadInfo[] infos = letRun();
+        assertComplete(infos);
     }
 
     /**
@@ -214,24 +220,99 @@ public abstract class TestThread extends Thread
         }
     }
 
-    private void letRun()
+    private ThreadInfo[] letRun()
     {
         ThreadMBean mbean = ManagementFactory.getThreadMBean();
         assert mbean.isThreadContentionMonitoringEnabled();
-        ThreadInfo info;
+
+        ThreadGroup group = this.getThreadGroup();
+        Thread[] threads = new TestThread[group.activeCount()];
+        group.enumerate(threads);
+
+        ThreadInfo[] infos = new ThreadInfo[threads.length];
+
         do
         {
             Thread.yield();
-            info = mbean.getThreadInfo(this.getId());
         }
-        while (info != null
-                && (info.getThreadState() == ThreadState.NEW
-                    || info.getThreadState() == ThreadState.RUNNING));
+        while (anyRunning(mbean, threads, infos));
+
+        return infos;
     }
 
-    private synchronized void assertComplete()
+    private boolean anyRunning(ThreadMBean mbean, Thread[] threads, ThreadInfo[] infos)
     {
-        Assert.assertNull("Action should not be blocked", initiatedAction);
+        int i = 0;
+        for (Thread thread : threads)
+        {
+            if (thread != null)
+            {
+                ThreadInfo info = mbean.getThreadInfo(thread.getId());
+                infos[i++] = info;
+                if (info != null)
+                {
+                    if (info.getThreadState() == ThreadState.NEW
+                            || info.getThreadState() == ThreadState.RUNNING)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private synchronized void assertComplete(ThreadInfo[] infos)
+    {
+        if (initiatedAction != null)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (ThreadInfo info : infos)
+            {
+                if (info != null)
+                {
+                    builder.append(" <");
+                    builder.append(info.getThreadName());
+                    builder.append("[");
+                    builder.append(info.getThreadId());
+                    builder.append("]: ");
+                    builder.append(info.getThreadState());
+                    if (info.getLockName() != null)
+                    {
+                        builder.append(" on ");
+                        if (info.getLockName().startsWith(
+                                this.getClass().getName() + "@"))
+                        {
+                            builder.append("itself");
+                        }
+                        else
+                        {
+                            builder.append(info.getLockName());
+                        }
+                    }
+                    if (info.getLockOwnerName() != null)
+                    {
+                        builder.append(" held by ");
+                        builder.append(info.getLockOwnerName());
+                        builder.append("[");
+                        builder.append(info.getLockOwnerId());
+                        builder.append("]");
+                    }
+                    if (info.getStackTrace().length != 0)
+                    {
+                        builder.append(" at ");
+                        builder.append(info.getStackTrace()[0].toString());
+                    }
+                    builder.append(">");
+                }
+            }
+            throw new AssertionFailedError(
+                    this.getName() + "[" + this.getId() + "]"
+                    + " should not be blocked during \""
+                    + initiatedAction + "\""
+                    + builder.toString());
+        }
     }
 
     private synchronized void assertNotComplete()

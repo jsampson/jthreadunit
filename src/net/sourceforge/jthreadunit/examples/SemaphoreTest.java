@@ -173,8 +173,16 @@ public class SemaphoreTest extends TestCase
         }
     }
 
+    private ThreadGroup threadGroup = new ThreadGroup("SemaphoreTest");
+    private int threadCount = 0;
+
     public class SemaphoreTestThread extends TestThread
     {
+        public SemaphoreTestThread()
+        {
+            super(threadGroup, "SemaphoreTestThread-" + (++threadCount));
+        }
+
         public void doDown() throws InterruptedException
         {
             semaphore.down();

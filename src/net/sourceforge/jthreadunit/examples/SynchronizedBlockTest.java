@@ -36,8 +36,17 @@ public class SynchronizedBlockTest extends TestCase
         thread2.kill();
     }
 
+    private ThreadGroup threadGroup = new ThreadGroup("SynchronizedBlockTest");
+    private int threadCount = 0;
+
     public class SynchronizedBlockTestThread extends TestThread
     {
+        public SynchronizedBlockTestThread()
+        {
+            super(threadGroup,
+                    "SynchronizedBlockTestThread-" + (++threadCount));
+        }
+
         public void doEnter() throws InterruptedException
         {
             synchronized (lock)

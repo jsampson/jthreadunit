@@ -157,8 +157,16 @@ public class ReadWriteLockTest extends TestCase
         thread3.performAction("releaseRead");
     }
 
+    private ThreadGroup threadGroup = new ThreadGroup("ReadWriteLockTest");
+    private int threadCount = 0;
+
     public class ReadWriteLockTestThread extends TestThread
     {
+        public ReadWriteLockTestThread()
+        {
+            super(threadGroup, "ReadWriteLockTestThread-" + (++threadCount));
+        }
+
         public void doAcquireRead() throws InterruptedException
         {
             lock.acquireRead();

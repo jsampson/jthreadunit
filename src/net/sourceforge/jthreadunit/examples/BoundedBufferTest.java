@@ -95,12 +95,16 @@ public abstract class BoundedBufferTest extends TestCase
         thread3.kill();
     }
 
+    private ThreadGroup threadGroup = new ThreadGroup("BoundedBufferTest");
+    private int threadCount = 0;
+
     public class BufferTestThread extends TestThread
     {
         private Object object;
 
         public BufferTestThread(Object object)
         {
+            super(threadGroup, "BufferTestThread-" + (++threadCount));
             this.object = object;
         }
 
