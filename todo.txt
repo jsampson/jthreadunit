@@ -40,7 +40,7 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - eliminate duplication between BrokenBoundedBuffer and FixedBoundedBuffer
 
-- test-drive fixing the notify/notifyAll problems in examples using
+= test-drive fixing the notify/notifyAll problems in examples using
   "checkpoint" method
   <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
 
