@@ -44,7 +44,7 @@ public class SemaphoreTest extends TestCase
         thread1.performAction("down");
         assertEquals(0, semaphore.state());
 
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
         assertEquals(1, semaphore.state());
     }
 
@@ -58,11 +58,11 @@ public class SemaphoreTest extends TestCase
         assertEquals(0, semaphore.state());
 
         thread2.actionShouldBlock("down");
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
         thread2.completeBlockedAction();
         assertEquals(0, semaphore.state());
 
-        thread2.performAction("up");
+        thread2.performActions("up", "notify");
         assertEquals(1, semaphore.state());
     }
 
@@ -79,14 +79,14 @@ public class SemaphoreTest extends TestCase
         assertEquals(0, semaphore.state());
 
         thread3.actionShouldBlock("down");
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
         thread3.completeBlockedAction();
         assertEquals(0, semaphore.state());
 
-        thread2.performAction("up");
+        thread2.performActions("up", "notify");
         assertEquals(1, semaphore.state());
 
-        thread3.performAction("up");
+        thread3.performActions("up", "notify");
         assertEquals(2, semaphore.state());
     }
 
@@ -101,17 +101,17 @@ public class SemaphoreTest extends TestCase
 
         thread2.actionShouldBlock("down");
         thread3.actionShouldBlock("down");
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
 
         thread2.completeBlockedAction();
         thread3.assertStillBlocked();
         assertEquals(0, semaphore.state());
 
-        thread2.performAction("up");
+        thread2.performActions("up", "notify");
         thread3.completeBlockedAction();
         assertEquals(0, semaphore.state());
 
-        thread3.performAction("up");
+        thread3.performActions("up", "notify");
         assertEquals(1, semaphore.state());
     }
 
@@ -125,7 +125,7 @@ public class SemaphoreTest extends TestCase
 
         assertEquals(0, semaphore.state());
 
-        thread2.performAction("up");
+        thread2.performActions("up", "notify");
         thread1.completeBlockedAction();
 
         assertEquals(0, semaphore.state());
@@ -137,7 +137,7 @@ public class SemaphoreTest extends TestCase
 
         assertEquals(0, semaphore.state());
 
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
 
         assertEquals(1, semaphore.state());
 
@@ -153,13 +153,27 @@ public class SemaphoreTest extends TestCase
         thread1.performAction("down");
         thread2.actionShouldBlock("down");
         thread2.interrupt();
-        thread1.performAction("up");
+        thread1.performActions("up", "notify");
         thread3.performAction("down");
         thread1.actionShouldBlock("down");
         thread2.actionShouldBlock("down");
         thread1.interrupt();
-        thread3.performAction("up");
+        thread3.performActions("up", "notify");
         thread2.completeBlockedAction();
+    }
+
+    public void testRaceRequiresWhile() throws Exception
+    {
+        setUp(0);
+
+        thread1.actionShouldBlock("down");
+        thread2.performAction("up");
+        thread3.actionShouldBlock("down");
+        thread2.performAction("notify");
+        thread3.completeBlockedAction();
+        thread1.assertStillBlocked();
+
+        assertEquals(0, semaphore.state());
     }
 
     public void testInvalidState() throws Exception
@@ -186,7 +200,7 @@ public class SemaphoreTest extends TestCase
             semaphore.down();
         }
 
-        public void doUp()
+        public void doUp() throws InterruptedException
         {
             semaphore.up();
         }

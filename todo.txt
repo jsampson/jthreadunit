@@ -50,6 +50,8 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - review/fix other notify() call in BoundedBuffer
 
+= fix wait() not in while in Semaphore
+
 = add jar and javadoc Ant targets
 
 = include pre-built jar and javadoc in distribution
@@ -63,5 +65,7 @@ x make checkpoint optional (so don't always have to "perform" it)
   be asserted
 
 = include thread and action name in assertions
+
+- rewrite overview on home page
 
 - consider how to test timed-wait stuff in Semaphore

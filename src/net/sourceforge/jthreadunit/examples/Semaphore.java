@@ -1,5 +1,7 @@
 package net.sourceforge.jthreadunit.examples;
 
+import net.sourceforge.jthreadunit.TestThread;
+
 public class Semaphore
 {
     private int currentState;
@@ -17,7 +19,7 @@ public class Semaphore
 
     public synchronized void down() throws InterruptedException
     {
-        if (currentState == 0)
+        while (currentState == 0)
         {
             wait();
         }
@@ -25,9 +27,10 @@ public class Semaphore
         currentState--;
     }
 
-    public synchronized void up()
+    public synchronized void up() throws InterruptedException
     {
         currentState++;
+        TestThread.checkpoint("notify");
         notify();
     }
 
