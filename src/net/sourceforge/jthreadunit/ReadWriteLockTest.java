@@ -134,6 +134,20 @@ public class ReadWriteLockTest extends TestCase
         thread4.performAction("releaseRead");
     }
 
+    public void testReallyFunky() throws Exception
+    {
+        thread1.performAction("acquireRead");
+        thread2.actionShouldBlock("acquireWrite");
+        thread3.actionShouldBlock("acquireRead");
+        thread4.actionShouldBlock("acquireWrite");
+        thread2.interrupt();
+        thread1.performAction("releaseRead");
+        thread4.completeBlockedAction();
+        thread4.performAction("releaseWrite");
+        thread3.completeBlockedAction();
+        thread3.performAction("releaseRead");
+    }
+
     private class ReadWriteLockTestThread extends TestThread
     {
         public void doAcquireRead() throws InterruptedException

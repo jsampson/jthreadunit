@@ -36,6 +36,11 @@
   immediately; and order of arriving at monitor not necessarily order of
   acquiring monitor (though it seems to usually be so)
 
+- brag in docs: common error is to use notify() instead of notifyAll(); but
+  in the examples I always use notify() unless and until I have a failing test
+  that forces me to use notifyAll(); which anyone can verify by changing any
+  notifyAll() in the code to notify() and seeing at least one test fail
+
 .......................
     public boolean isBlocked(Thread thread)
     {

@@ -19,7 +19,7 @@ public class ReadWriteLock
     public synchronized void releaseRead()
     {
         readerCount--;
-        notify();
+        notifyAll();
     }
 
     public synchronized void acquireWrite() throws InterruptedException
