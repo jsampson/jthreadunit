@@ -30,7 +30,7 @@
 
 = come up with a good way to stop TestThread
 
-- discuss code review techniques: notify, synchronized, etc.
+= discuss code review techniques: notify, synchronized, etc.
 
 = copy BoundedBuffer to BrokenBoundedBuffer
 
@@ -43,6 +43,14 @@ x make checkpoint optional (so don't always have to "perform" it)
 = test-drive fixing the notify/notifyAll problems in examples using
   "checkpoint" method
   <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
+
+- review/fix other notify() call in BoundedBuffer
+
+- add jar and javadoc Ant targets
+
+- include pre-built jar and javadoc in distribution
+
+- link to javadoc from home page
 
 - if exception is thrown from action, rethrow it from assertComplete
   (instead of calling printStackTrace)
