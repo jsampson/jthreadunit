@@ -14,7 +14,7 @@ import junit.framework.AssertionFailedError;
 /**
  * A thread that runs in an endless loop performing actions. A controlling
  * thread should call the various methods of this class to control the
- * actions performed, and finally call {@link #stop()} when there are no
+ * actions performed, and finally call {@link #kill()} when there are no
  * more actions to be performed. Calling {@link #interrupt()} will not
  * kill the thread, but merely reset it to the state of waiting for a command.
  * That is, if the thread is blocked, {@link #interrupt()} will unblock it
@@ -145,8 +145,8 @@ public abstract class TestThread extends Thread
      * Called from arbitrary code to mark the current action as complete and
      * wait for the next action without returning from the first action method.
      * Equivalent to calling {@link #expectAction(String)} directly from an
-     * action method, unless the current thread is not a TestThread, in which
-     * case does nothing.
+     * action method, unless the current thread is not a <tt>TestThread</tt>,
+     * in which case does nothing.
      */
     public static void checkpoint(String actionName) throws InterruptedException
     {

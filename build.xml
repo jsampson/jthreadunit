@@ -1,5 +1,7 @@
 <project default="test">
 
+    <property name="version" value="0.2" />
+
     <path id="buildpath">
         <fileset dir="lib">
             <include name="*.jar" />
@@ -42,6 +44,38 @@
               classpathref="runpath" failonerror="true">
             <arg value="net.sourceforge.jthreadunit.examples.AllTests" />
         </java>
+    </target>
+
+    <target name="doc">
+        <delete dir="doc/javadoc" />
+        <javadoc packagenames="net.sourceforge.jthreadunit" source="1.5"
+                 classpathref="buildpath"
+                 sourcepath="src" destdir="doc/javadoc">
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+            <link href="http://www.junit.org/junit/javadoc/3.8.1/" />
+        </javadoc>
+    </target>
+
+    <target name="jar" depends="build">
+        <delete>
+            <fileset dir="." includes="jthreadunit-*.jar" />
+        </delete>
+        <jar destfile="jthreadunit-${version}.jar" basedir="bin"/>
+    </target>
+
+    <target name="dist" depends="build,doc,jar">
+        <delete>
+            <fileset dir="." includes="jthreadunit-*.zip" />
+            <fileset dir="." includes="jthreadunit-*.tar.gz" />
+        </delete>
+        <zip destfile="jthreadunit-${version}.zip">
+            <zipfileset dir="." excludes="bin/**,*.zip,*.tar.gz"
+                        prefix="jthreadunit-${version}" />
+        </zip>
+        <tar destfile="jthreadunit-${version}.tar.gz" compression="gzip">
+            <tarfileset dir="." excludes="bin/**,*.zip,*.tar.gz"
+                        prefix="jthreadunit-${version}" />
+        </tar>
     </target>
 
 </project>
