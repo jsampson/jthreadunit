@@ -69,9 +69,7 @@
         have it, and the code is much simpler now, as well as faster and more
         robust.</p>
 
-        <p>There are two remaining imperfections. In each case, the code is
-        behaving deterministically, but I'm not certain that the language
-        guarantees it.</p>
+        <p>There are two remaining imperfections:</p>
 
         <ol>
             <li>A few of the tests (the trickiest ones) rely on the ordering of
@@ -85,15 +83,23 @@
 
             <li>When checking that a thread has become unblocked, the code
             does a <tt>Thread.yield()</tt> and then asks <tt>ThreadMBean</tt>
-            for the thread's status. I'm not completely certain that this will
-            always give the thread a chance to get into the running state,
-            though it seems to. When a waiting thread is notified, is it
-            immediately marked as running, possibly to block again reacquiring
-            the monitor, or is it immediately marked as blocked on the monitor?
-            When one thread leaves a monitor, is the next thread in the
-            monitor's queue immediately marked as running, or does it stay
-            marked as blocked until it gets a timeslice?</li>
+            for the thread's status. This does not always give the thread a
+            chance to get into the running state. I have improved the
+            situation by fiddling with thread priorities&mdash;the parent
+            thread (the test itself) is set to <tt>Thread.MIN_PRIORITY</tt>
+            and each <tt>TestThread</tt> is set to <tt>Thread.MAX_PRIORITY</tt>
+            to give them as much chance as possible to get their act together.
+            Even without this priority fiddling, only a few out of several
+            thousand test runs was affected by this problem; now it affects
+            one out of hundreds of thousands.</li>
         </ol>
+
+        <p>When a waiting thread is notified, is it immediately marked as
+        running, possibly to block again reacquiring the monitor, or is it
+        immediately marked as blocked on the monitor?  When one thread leaves a
+        monitor, is the next thread in the monitor's queue immediately marked
+        as running, or does it stay marked as blocked until it gets a
+        timeslice?</p>
 
         <p>If you <b>ever</b> see any of the included tests fail, please
         <a href="mailto:jsampson@users.sourceforge.net">let me know</a> right

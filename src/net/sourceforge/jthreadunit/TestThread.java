@@ -33,6 +33,7 @@ public abstract class TestThread extends Thread
     {
         ThreadMBean mbean = ManagementFactory.getThreadMBean();
         mbean.setThreadContentionMonitoringEnabled(true);
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
     }
 
     /**
@@ -161,6 +162,7 @@ public abstract class TestThread extends Thread
 
     public void run()
     {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         try
         {
             while (!killed)
