@@ -26,7 +26,12 @@ import junit.framework.Assert;
  */
 public abstract class TestThread extends Thread
 {
+    private static final int ACTION_COMPLETE = 0;
+    private static final int ACTION_GIVEN = 1;
+    private static final int ACTION_TAKEN = 2;
+
     private String initiatedAction = null;
+    private int status = ACTION_COMPLETE;
     private volatile boolean killed = false;
 
     /**
@@ -36,7 +41,7 @@ public abstract class TestThread extends Thread
      * @throws AssertionFailedError If this thread blocks before completing the
      *         action.
      */
-    public void performAction(String actionName)
+    public void performAction(String actionName) throws InterruptedException
     {
         initiateAction(actionName);
         completeBlockedAction();
@@ -49,6 +54,7 @@ public abstract class TestThread extends Thread
      * {@link #checkpoint(String)} calls.
      */
     public void performActions(String... actionNames)
+            throws InterruptedException
     {
         for (String actionName : actionNames)
         {
@@ -63,7 +69,7 @@ public abstract class TestThread extends Thread
      * @throws AssertionFailedError If this thread completes the action without
      *         blocking.
      */
-    public void actionShouldBlock(String actionName)
+    public void actionShouldBlock(String actionName) throws InterruptedException
     {
         initiateAction(actionName);
         assertStillBlocked();
@@ -90,6 +96,7 @@ public abstract class TestThread extends Thread
      * {@link #checkpoint(String)} calls.
      */
     public void completeBlockedActionWithActions(String... actionNames)
+            throws InterruptedException
     {
         completeBlockedAction();
         performActions(actionNames);
@@ -188,16 +195,23 @@ public abstract class TestThread extends Thread
     }
 
     private synchronized void initiateAction(String actionName)
+            throws InterruptedException
     {
         checkActionName(actionName);
 
-        if (initiatedAction != null)
+        if (status != ACTION_COMPLETE)
         {
             throw new IllegalStateException("Previous action not complete");
         }
 
         initiatedAction = actionName;
-        notify();
+        status = ACTION_GIVEN;
+        notifyAll();
+
+        while (status == ACTION_GIVEN)
+        {
+            wait();
+        }
     }
 
     private void letRun()
@@ -245,17 +259,20 @@ public abstract class TestThread extends Thread
 
     private synchronized String waitForAction() throws InterruptedException
     {
-        if (initiatedAction == null)
+        while (status != ACTION_GIVEN)
         {
             wait();
-            assert initiatedAction != null;
         }
+        status = ACTION_TAKEN;
+        notifyAll();
         return initiatedAction;
     }
 
     private synchronized void clearAction()
     {
         initiatedAction = null;
+        status = ACTION_COMPLETE;
+        notifyAll();
     }
 
     private void checkActionName(String actionName)
