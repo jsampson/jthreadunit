@@ -26,12 +26,18 @@ public class ReadWriteLock
     {
         waitingWriters++;
 
-        while (writeLocked || readerCount > 0)
+        try
         {
-            wait();
+            while (writeLocked || readerCount > 0)
+            {
+                wait();
+            }
+        }
+        finally
+        {
+            waitingWriters--;
         }
 
-        waitingWriters--;
         writeLocked = true;
     }
 

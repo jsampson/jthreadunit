@@ -14,6 +14,8 @@
 
 = delete ThreadTests, but move isBlocked somewhere reasonable
 
+= in ReadWriteLock, decrement correctly when waiting writer is interrupted
+
 - remove unused imports
 
 - move examples to subpackage
