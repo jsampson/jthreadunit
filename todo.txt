@@ -18,10 +18,14 @@
 
 - move examples to subpackage
 
-- find a way to test-drive fixing the notify/notifyAll problems in examples
+- copy BoundedBuffer to BrokenBoundedBuffer
+
+- test-drive fixing the notify/notifyAll problems in examples using
+  "checkpoint" method
   <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
 
-- if exception is thrown from action, rethrow it from assertComplete (instead of calling printStackTrace)
+- if exception is thrown from action, rethrow it from assertComplete
+  (instead of calling printStackTrace)
 
 .......................
     public boolean isBlocked(Thread thread)
