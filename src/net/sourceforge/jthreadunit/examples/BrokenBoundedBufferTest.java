@@ -9,7 +9,7 @@ public class BrokenBoundedBufferTest extends BoundedBufferTest
         return new BrokenBoundedBuffer();
     }
 
-    public void testTheBug()
+    public void testTheBug() throws Exception
     {
         buffer = new BrokenBoundedBuffer(1);
 

@@ -34,7 +34,7 @@ public class SemaphoreTest extends TestCase
         }
     }
 
-    public void testOneThread()
+    public void testOneThread() throws Exception
     {
         setUp(1);
 
@@ -47,7 +47,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(1, semaphore.state());
     }
 
-    public void testTwoThreads()
+    public void testTwoThreads() throws Exception
     {
         setUp(1);
 
@@ -65,7 +65,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(1, semaphore.state());
     }
 
-    public void testThreeThreadsTwoResources()
+    public void testThreeThreadsTwoResources() throws Exception
     {
         setUp(2);
 
@@ -89,7 +89,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(2, semaphore.state());
     }
 
-    public void testThreeThreadsOneResource()
+    public void testThreeThreadsOneResource() throws Exception
     {
         setUp(1);
 
@@ -114,7 +114,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(1, semaphore.state());
     }
 
-    public void testInitialZeroDownFirst()
+    public void testInitialZeroDownFirst() throws Exception
     {
         setUp(0);
 
@@ -130,7 +130,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(0, semaphore.state());
     }
 
-    public void testInitialZeroUpFirst()
+    public void testInitialZeroUpFirst() throws Exception
     {
         setUp(0);
 
@@ -145,7 +145,7 @@ public class SemaphoreTest extends TestCase
         assertEquals(0, semaphore.state());
     }
 
-    public void testInterrupt()
+    public void testInterrupt() throws Exception
     {
         setUp(1);
 
@@ -161,7 +161,7 @@ public class SemaphoreTest extends TestCase
         thread2.completeBlockedAction();
     }
 
-    public void testInvalidState()
+    public void testInvalidState() throws Exception
     {
         try
         {

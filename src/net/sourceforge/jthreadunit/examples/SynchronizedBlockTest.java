@@ -8,7 +8,7 @@ public class SynchronizedBlockTest extends TestCase
 {
     private Object lock = new Object();
 
-    public void testOneThread()
+    public void testOneThread() throws Exception
     {
         TestThread thread1 = new SynchronizedBlockTestThread();
         thread1.start();
@@ -19,7 +19,7 @@ public class SynchronizedBlockTest extends TestCase
         thread1.kill();
     }
 
-    public void testTwoThreads()
+    public void testTwoThreads() throws Exception
     {
         TestThread thread1 = new SynchronizedBlockTestThread();
         TestThread thread2 = new SynchronizedBlockTestThread();

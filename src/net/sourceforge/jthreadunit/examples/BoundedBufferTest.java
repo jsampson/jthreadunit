@@ -10,14 +10,14 @@ public abstract class BoundedBufferTest extends TestCase
 
     protected abstract BoundedBuffer createBoundedBuffer();
 
-    public void testPutTake() throws InterruptedException
+    public void testPutTake() throws Exception
     {
         Object one = new Object();
         buffer.put(one);
         assertSame(one, buffer.take());
     }
 
-    public void testPutTwoTakeTwo() throws InterruptedException
+    public void testPutTwoTakeTwo() throws Exception
     {
         Object one = new Object();
         Object two = new Object();
@@ -27,7 +27,7 @@ public abstract class BoundedBufferTest extends TestCase
         assertSame(two, buffer.take());
     }
 
-    public void testTwoThreads()
+    public void testTwoThreads() throws Exception
     {
         Object object = new Object();
         TestThread thread1 = new BufferTestThread(object);
@@ -41,7 +41,7 @@ public abstract class BoundedBufferTest extends TestCase
         thread2.kill();
     }
 
-    public void testTakeTwoPutTwo()
+    public void testTakeTwoPutTwo() throws Exception
     {
         Object object1 = new Object();
         Object object2 = new Object();
@@ -65,7 +65,7 @@ public abstract class BoundedBufferTest extends TestCase
         thread4.kill();
     }
 
-    public void testPutSix()
+    public void testPutSix() throws Exception
     {
         Object object = new Object();
 
