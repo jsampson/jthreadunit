@@ -35,6 +35,8 @@ public class BoundedBufferTest extends TestCase
         thread1.actionShouldBlock("take");
         thread2.performAction("put");
         thread1.completeBlockedAction();
+        thread1.kill();
+        thread2.kill();
     }
 
     public void testTakeTwoPutTwo()
@@ -55,6 +57,10 @@ public class BoundedBufferTest extends TestCase
         thread4.performAction("put");
         thread1.completeBlockedAction();
         thread2.completeBlockedAction();
+        thread1.kill();
+        thread2.kill();
+        thread3.kill();
+        thread4.kill();
     }
 
     public void testPutSix()
@@ -81,6 +87,10 @@ public class BoundedBufferTest extends TestCase
 
         thread1.completeBlockedAction();
         thread2.completeBlockedAction();
+
+        thread1.kill();
+        thread2.kill();
+        thread3.kill();
     }
 
     public void testTheBug() // not nearly yet
@@ -107,6 +117,11 @@ public class BoundedBufferTest extends TestCase
 
         producer2.performAction("put");
         consumer2.completeBlockedAction();
+
+        consumer1.kill();
+        consumer2.kill();
+        producer1.kill();
+        producer2.kill();
     }
 
     public class BufferTestThread extends TestThread

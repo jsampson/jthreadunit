@@ -26,7 +26,8 @@ import junit.framework.Assert;
  */
 public abstract class TestThread extends Thread
 {
-    private String initiatedAction;
+    private String initiatedAction = null;
+    private volatile boolean killed = false;
 
     public TestThread()
     {
@@ -106,11 +107,21 @@ public abstract class TestThread extends Thread
         }
     }
 
+    /**
+     * Kill this thread. Sets a flag and interrupts the thread, as an
+     * alternative to the deprecated {@link Thread#stop()}.
+     */
+    public void kill()
+    {
+        killed = true;
+        interrupt();
+    }
+
     public void run()
     {
         try
         {
-            while (true)
+            while (!killed)
             {
                 try
                 {

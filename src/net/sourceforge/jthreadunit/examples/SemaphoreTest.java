@@ -24,6 +24,16 @@ public class SemaphoreTest extends TestCase
         thread3.start();
     }
 
+    public void tearDown()
+    {
+        if (semaphore != null)
+        {
+            thread1.kill();
+            thread2.kill();
+            thread3.kill();
+        }
+    }
+
     public void testOneThread()
     {
         setUp(1);

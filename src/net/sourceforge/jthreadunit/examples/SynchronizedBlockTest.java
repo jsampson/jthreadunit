@@ -15,6 +15,8 @@ public class SynchronizedBlockTest extends TestCase
 
         thread1.performAction("enter");
         thread1.performAction("leave");
+
+        thread1.kill();
     }
 
     public void testTwoThreads()
@@ -29,6 +31,9 @@ public class SynchronizedBlockTest extends TestCase
         thread1.performAction("leave");
         thread2.completeBlockedAction();
         thread2.performAction("leave");
+
+        thread1.kill();
+        thread2.kill();
     }
 
     public class SynchronizedBlockTestThread extends TestThread

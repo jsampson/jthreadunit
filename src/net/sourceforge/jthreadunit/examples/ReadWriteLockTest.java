@@ -27,6 +27,14 @@ public class ReadWriteLockTest extends TestCase
         thread4.start();
     }
 
+    public void tearDown()
+    {
+        thread1.kill();
+        thread2.kill();
+        thread3.kill();
+        thread4.kill();
+    }
+
     public void testOneReader() throws Exception
     {
         thread1.performAction("acquireRead");

@@ -28,7 +28,7 @@
 
 = move examples to subpackage
 
-- come up with a good way to stop TestThread
+= come up with a good way to stop TestThread
 
 - discuss code review techniques: notify, synchronized, etc.
 
