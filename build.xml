@@ -65,15 +65,10 @@
 
     <target name="dist" depends="build,doc,jar">
         <delete>
-            <fileset dir="." includes="jthreadunit-*.zip" />
             <fileset dir="." includes="jthreadunit-*.tar.gz" />
         </delete>
-        <zip destfile="jthreadunit-${version}.zip">
-            <zipfileset dir="." excludes="bin/**,*.zip,*.tar.gz"
-                        prefix="jthreadunit-${version}" />
-        </zip>
         <tar destfile="jthreadunit-${version}.tar.gz" compression="gzip">
-            <tarfileset dir="." excludes="bin/**,*.zip,*.tar.gz"
+            <tarfileset dir="." excludes="bin/**,*.tar.gz"
                         prefix="jthreadunit-${version}" />
         </tar>
     </target>
