@@ -256,10 +256,29 @@ public abstract class TestThread extends Thread
                     {
                         return true;
                     }
+                    else if (info.getLockOwnerId() != -1)
+                    {
+                        if (!lockOwnerAmongThreads(info, threads))
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
         }
 
+        return false;
+    }
+
+    private boolean lockOwnerAmongThreads(ThreadInfo info, Thread[] threads)
+    {
+        for (Thread thread : threads)
+        {
+            if (thread != null && thread.getId() == info.getLockOwnerId())
+            {
+                return true;
+            }
+        }
         return false;
     }
 

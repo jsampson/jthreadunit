@@ -44,7 +44,9 @@ x make checkpoint optional (so don't always have to "perform" it)
   "checkpoint" method
   <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
 
-- try putting TestThreads in a ThreadGroup so that letRun can let them all run
+= try putting TestThreads in a ThreadGroup so that letRun can let them all run
+
+- discuss blocking with unrelated threads on [[I object
 
 - review/fix other notify() call in BoundedBuffer
 
@@ -60,7 +62,7 @@ x make checkpoint optional (so don't always have to "perform" it)
 - if InterruptedException is thrown from action, allow that fact to
   be asserted
 
-- include thread name in assertion
+- include thread and action name in assertions
 
 - consider how to test timed-wait stuff in Semaphore
 
