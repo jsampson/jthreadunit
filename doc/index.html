@@ -42,7 +42,8 @@
         writing a test that actually uncovers the bug.</p>
 
         <p>Try it: Change any <tt>notifyAll()</tt> in the examples to
-        <tt>notify()</tt> and a test should fail. If none does, let me know!
+        <tt>notify()</tt> and a test should fail. If none does,
+        <a href="mailto:jsampson@users.sourceforge.net">let me know</a>!
         <tt>:)</tt></p>
 
         <p>And for any remaining usage of <tt>notify()</tt> which you believe
@@ -69,7 +70,8 @@
         have it, and the code is much simpler now, as well as faster and more
         robust.</p>
 
-        <p>There are two remaining imperfections:</p>
+        <p>There are a few imperfections, things that I've gotten to work
+        reliably but that the language might not guarantee:</p>
 
         <ol>
             <li>A few of the tests (the trickiest ones) rely on the ordering of
@@ -81,25 +83,26 @@
             queue of threads, and I would expect the language to not guarantee
             it.</li>
 
-            <li>When checking that a thread has become unblocked, the code
-            does a <tt>Thread.yield()</tt> and then asks <tt>ThreadMBean</tt>
-            for the thread's status. This does not always give the thread a
-            chance to get into the running state. I have improved the
-            situation by fiddling with thread priorities&mdash;the parent
-            thread (the test itself) is set to <tt>Thread.MIN_PRIORITY</tt>
-            and each <tt>TestThread</tt> is set to <tt>Thread.MAX_PRIORITY</tt>
-            to give them as much chance as possible to get their act together.
-            Even without this priority fiddling, only a few out of several
-            thousand test runs was affected by this problem; now it affects
-            one out of hundreds of thousands.</li>
-        </ol>
+            <li>When checking that a thread has become unblocked, the code does
+            a <tt>Thread.yield()</tt> and then asks <tt>ThreadMBean</tt> for
+            the thread's status. This alone does not always give the thread a
+            chance to get into the running state. I have improved the situation
+            by fiddling with thread priorities&mdash;the parent thread (the
+            test itself) is set to <tt>Thread.MIN_PRIORITY</tt> and each
+            <tt>TestThread</tt> is set to <tt>Thread.MAX_PRIORITY</tt> to give
+            them as much chance as possible to get their act together.</li>
 
-        <p>When a waiting thread is notified, is it immediately marked as
-        running, possibly to block again reacquiring the monitor, or is it
-        immediately marked as blocked on the monitor?  When one thread leaves a
-        monitor, is the next thread in the monitor's queue immediately marked
-        as running, or does it stay marked as blocked until it gets a
-        timeslice?</p>
+            <li>Threads sometimes block on system objects held temporarily by
+            arbitrary other threads. For example, I've occasionally seen threads
+            blocked on an unknown object of type <tt>int[][]</tt>. Therefore
+            when checking whether a thread is blocked in an interesting way, we
+            have to be careful to ignore these cases. My solution is to put all
+            <tt>TestThread</tt>s involved in a particular test into a single
+            <tt>ThreadGroup</tt>, and then instead of just checking the state
+            of the thread being asserted on, all the threads in the group are
+            allowed to run until they are all either waiting or blocked on
+            locks held by other threads in the same group.</li>
+        </ol>
 
         <p>If you <b>ever</b> see any of the included tests fail, please
         <a href="mailto:jsampson@users.sourceforge.net">let me know</a> right
@@ -136,6 +139,8 @@
             <li>Always use <tt>notifyAll()</tt> instead of <tt>notify()</tt>.</li>
         </ol>
 
+        <p>(Only the first is outside of the scope of JThreadUnit, however.)</p>
+
         <p>Tools such as <a href="http://www.cs.umd.edu/~pugh/java/bugs/">FindBugs</a>
         and <a href="http://artho.com/jlint/index.shtml">JLint</a> perform
         static analysis to automatically detect potential problems with
@@ -148,6 +153,8 @@
         code.</p>
 
         <hr />
+
+        <p><a href="mailto:jsampson@users.sourceforge.net">Contact</a></p>
 
         <p><a href="javadoc/net/sourceforge/jthreadunit/TestThread.html">Javadoc</a></p>
 

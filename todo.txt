@@ -46,7 +46,7 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 = try putting TestThreads in a ThreadGroup so that letRun can let them all run
 
-- discuss blocking with unrelated threads on [[I object
+= discuss blocking with unrelated threads on [[I object
 
 - review/fix other notify() call in BoundedBuffer
 
