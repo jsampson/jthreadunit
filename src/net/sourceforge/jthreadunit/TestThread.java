@@ -284,7 +284,7 @@ public abstract class TestThread extends Thread
 
     private synchronized void assertComplete(ThreadInfo[] infos)
     {
-        if (initiatedAction != null)
+        if (status != ACTION_COMPLETE)
         {
             StringBuilder builder = new StringBuilder();
             for (ThreadInfo info : infos)
@@ -336,7 +336,13 @@ public abstract class TestThread extends Thread
 
     private synchronized void assertNotComplete()
     {
-        Assert.assertNotNull("Action should be blocked", initiatedAction);
+        if (status == ACTION_COMPLETE)
+        {
+            throw new AssertionFailedError(
+                    this.getName() + "[" + this.getId() + "]"
+                    + " should be blocked during \""
+                    + initiatedAction + "\"");
+        }
     }
 
     private void action() throws Throwable
@@ -370,7 +376,6 @@ public abstract class TestThread extends Thread
 
     private synchronized void clearAction()
     {
-        initiatedAction = null;
         status = ACTION_COMPLETE;
         notifyAll();
     }

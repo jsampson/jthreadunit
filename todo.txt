@@ -62,7 +62,7 @@ x make checkpoint optional (so don't always have to "perform" it)
 - if InterruptedException is thrown from action, allow that fact to
   be asserted
 
-- include thread and action name in assertions
+= include thread and action name in assertions
 
 - consider how to test timed-wait stuff in Semaphore
 

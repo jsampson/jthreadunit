@@ -55,7 +55,8 @@ public class AssertionTest extends TestCase
         catch (AssertionFailedError good)
         {
             assertEquals(
-                    "Action should be blocked",
+                    "AssertionTestThread-1[" + thread.getId()
+                    + "] should be blocked during \"enter\"",
                     good.getMessage());
         }
 
