@@ -1,6 +1,8 @@
-package net.sourceforge.jthreadunit;
+package net.sourceforge.jthreadunit.examples;
 
 import junit.framework.TestCase;
+
+import net.sourceforge.jthreadunit.TestThread;
 
 public class SemaphoreTest extends TestCase
 {
@@ -161,7 +163,7 @@ public class SemaphoreTest extends TestCase
         }
     }
 
-    private class SemaphoreTestThread extends TestThread
+    public class SemaphoreTestThread extends TestThread
     {
         public void doDown() throws InterruptedException
         {

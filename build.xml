@@ -24,14 +24,14 @@
     <target name="test" depends="build">
         <java classname="junit.textui.TestRunner" fork="yes"
               classpathref="runpath" failonerror="true">
-            <arg value="net.sourceforge.jthreadunit.AllTests" />
+            <arg value="net.sourceforge.jthreadunit.examples.AllTests" />
         </java>
     </target>
 
     <target name="guitest" depends="build">
         <java classname="junit.swingui.TestRunner" fork="yes"
               classpathref="runpath" failonerror="true">
-            <arg value="net.sourceforge.jthreadunit.AllTests" />
+            <arg value="net.sourceforge.jthreadunit.examples.AllTests" />
         </java>
     </target>
 

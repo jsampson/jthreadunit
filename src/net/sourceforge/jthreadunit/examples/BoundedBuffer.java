@@ -1,4 +1,4 @@
-package net.sourceforge.jthreadunit;
+package net.sourceforge.jthreadunit.examples;
 
 public class BoundedBuffer
 {

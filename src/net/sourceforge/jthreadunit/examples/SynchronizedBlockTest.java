@@ -1,6 +1,8 @@
-package net.sourceforge.jthreadunit;
+package net.sourceforge.jthreadunit.examples;
 
 import junit.framework.TestCase;
+
+import net.sourceforge.jthreadunit.TestThread;
 
 public class SynchronizedBlockTest extends TestCase
 {
@@ -29,7 +31,7 @@ public class SynchronizedBlockTest extends TestCase
         thread2.performAction("leave");
     }
 
-    private class SynchronizedBlockTestThread extends TestThread
+    public class SynchronizedBlockTestThread extends TestThread
     {
         public void doEnter() throws InterruptedException
         {

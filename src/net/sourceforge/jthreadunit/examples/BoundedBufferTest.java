@@ -1,6 +1,8 @@
-package net.sourceforge.jthreadunit;
+package net.sourceforge.jthreadunit.examples;
 
 import junit.framework.TestCase;
+
+import net.sourceforge.jthreadunit.TestThread;
 
 public class BoundedBufferTest extends TestCase
 {
@@ -107,7 +109,7 @@ public class BoundedBufferTest extends TestCase
         consumer2.completeBlockedAction();
     }
 
-    private class BufferTestThread extends TestThread
+    public class BufferTestThread extends TestThread
     {
         private Object object;
 

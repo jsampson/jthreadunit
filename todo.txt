@@ -26,7 +26,11 @@
 
 = remove unused imports
 
-- move examples to subpackage
+= move examples to subpackage
+
+- come up with a good way to stop TestThread
+
+- discuss code review techniques: notify, synchronized, etc.
 
 - copy BoundedBuffer to BrokenBoundedBuffer
 

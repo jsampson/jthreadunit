@@ -1,6 +1,8 @@
-package net.sourceforge.jthreadunit;
+package net.sourceforge.jthreadunit.examples;
 
 import junit.framework.TestCase;
+
+import net.sourceforge.jthreadunit.TestThread;
 
 public class ReadWriteLockTest extends TestCase
 {
@@ -147,7 +149,7 @@ public class ReadWriteLockTest extends TestCase
         thread3.performAction("releaseRead");
     }
 
-    private class ReadWriteLockTestThread extends TestThread
+    public class ReadWriteLockTestThread extends TestThread
     {
         public void doAcquireRead() throws InterruptedException
         {
