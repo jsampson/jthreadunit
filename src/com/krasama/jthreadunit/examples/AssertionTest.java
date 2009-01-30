@@ -47,9 +47,9 @@ public class AssertionTest extends TestCase
             assertEquals(
                     "thread2[" + thread2.getId()
                     + "] should not be blocked during \"enter\" "
-                    + "<thread1[" + thread1.getId() + "]: Waiting on itself> "
+                    + "<thread1[" + thread1.getId() + "]: WAITING on itself> "
                     + "<thread2[" + thread2.getId()
-                    + "]: Blocked on java.lang.Object@"
+                    + "]: BLOCKED on java.lang.Object@"
                     + Integer.toHexString(lock.hashCode())
                     + " held by thread1[" + thread1.getId() + "]>",
                     good.getMessage());

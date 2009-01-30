@@ -20,8 +20,7 @@ package com.krasama.jthreadunit;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMBean;
-import java.lang.management.ThreadState;
+import java.lang.management.ThreadMXBean;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,6 +48,7 @@ public abstract class TestThread extends Thread
     private static final int ACTION_GIVEN = 1;
     private static final int ACTION_TAKEN = 2;
 
+    private final ThreadGroup group;
     private String initiatedAction = null;
     private int status = ACTION_COMPLETE;
     private volatile boolean killed = false;
@@ -56,6 +56,7 @@ public abstract class TestThread extends Thread
     public TestThread(ThreadGroup group, String name)
     {
         super(group, name);
+        this.group = group;
     }
 
     /**
@@ -186,8 +187,8 @@ public abstract class TestThread extends Thread
 
     public void start()
     {
-        ThreadMBean mbean = ManagementFactory.getThreadMBean();
-        mbean.setThreadContentionMonitoringEnabled(true);
+        ThreadMXBean mxbean = ManagementFactory.getThreadMXBean();
+        mxbean.setThreadContentionMonitoringEnabled(true);
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         this.setPriority(Thread.MAX_PRIORITY);
         super.start();
@@ -240,10 +241,9 @@ public abstract class TestThread extends Thread
 
     private ThreadInfo[] letRun()
     {
-        ThreadMBean mbean = ManagementFactory.getThreadMBean();
-        assert mbean.isThreadContentionMonitoringEnabled();
+        ThreadMXBean mxbean = ManagementFactory.getThreadMXBean();
+        assert mxbean.isThreadContentionMonitoringEnabled();
 
-        ThreadGroup group = this.getThreadGroup();
         Thread[] threads = new TestThread[group.activeCount()];
         group.enumerate(threads);
 
@@ -253,25 +253,25 @@ public abstract class TestThread extends Thread
         {
             Thread.yield();
         }
-        while (anyRunning(mbean, threads, infos));
+        while (anyRunning(mxbean, threads, infos));
 
         return infos;
     }
 
     private boolean anyRunning(
-            ThreadMBean mbean, Thread[] threads, ThreadInfo[] infos)
+            ThreadMXBean mxbean, Thread[] threads, ThreadInfo[] infos)
     {
         for (int i = 0; i < threads.length; i++)
         {
             Thread thread = threads[i];
             if (thread != null)
             {
-                ThreadInfo info = mbean.getThreadInfo(thread.getId());
+                ThreadInfo info = mxbean.getThreadInfo(thread.getId());
                 infos[i] = info;
                 if (info != null)
                 {
-                    if (info.getThreadState() == ThreadState.NEW
-                            || info.getThreadState() == ThreadState.RUNNING)
+                    if (info.getThreadState() == Thread.State.NEW
+                            || info.getThreadState() == Thread.State.RUNNABLE)
                     {
                         return true;
                     }

@@ -32,6 +32,7 @@ public class AllTests
         testSuite.addTestSuite(ReadWriteLockTest.class);
         testSuite.addTestSuite(SynchronizedBlockTest.class);
         testSuite.addTestSuite(AssertionTest.class);
+        testSuite.addTestSuite(ExceptionTest.class);
         return testSuite;
     }
 }
