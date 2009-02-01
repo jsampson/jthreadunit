@@ -83,3 +83,23 @@ x make checkpoint optional (so don't always have to "perform" it)
   (or assertStillBlocked) with that exception as its cause
 
 - allow assert that an exception *should* be thrown
+
+- don't throw InterruptedException from TestThread.checkpoint(); however, make
+  sure kill() still works
+
+- add deadlock detection using findMonitorDeadlockedThreads (Java 5) and/or
+  findDeadlockedThreads (Java 6) 
+
+- detect if two locks are ever acquired in opposite order
+
+- register jthreadunit.org
+
+- change package to org.jthreadunit
+
+- change to Maven build
+
+- deploy docs & jar on jthreadunit.org
+
+- deploy jar to Maven central repository
+
+- update SourceForge page to point to jthreadunit.org and GitHub
