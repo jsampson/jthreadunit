@@ -1,62 +1,64 @@
-= test-drive rwlock
+("-" means "still to do"; "/" means "done"; "x" means "not going to do")
 
-= expectAction() inside action methods
+/ test-drive rwlock
 
-= put TestThread methods in breadth-first order
+/ expectAction() inside action methods
 
-= have TestThread throw IllegalStateException instead  of assertions in a few places
+/ put TestThread methods in breadth-first order
 
-= review synchronized usage in TestThread
+/ have TestThread throw IllegalStateException instead  of assertions in a few places
 
-= making coding style consistent
+/ review synchronized usage in TestThread
 
-= rename *Tests to *Test
+/ making coding style consistent
 
-= delete ThreadTests, but move isBlocked somewhere reasonable
+/ rename *Tests to *Test
 
-= in ReadWriteLock, decrement correctly when waiting writer is interrupted
+/ delete ThreadTests, but move isBlocked somewhere reasonable
 
-= get rid of now-unused timed-wait stuff in Semaphore
+/ in ReadWriteLock, decrement correctly when waiting writer is interrupted
 
-= get rid of redundent lock object in Semaphore
+/ get rid of now-unused timed-wait stuff in Semaphore
 
-= get rid of the try/catch to deal with different ordering in
+/ get rid of redundent lock object in Semaphore
+
+/ get rid of the try/catch to deal with different ordering in
   SemaphoreTest#testThreeThreadsOneResource, since we're presuming that the
   order is deterministic until we learn otherwise
 
-= remove unused imports
+/ remove unused imports
 
-= move examples to subpackage
+/ move examples to subpackage
 
-= come up with a good way to stop TestThread
+/ come up with a good way to stop TestThread
 
-= discuss code review techniques: notify, synchronized, etc.
+/ discuss code review techniques: notify, synchronized, etc.
 
-= copy BoundedBuffer to BrokenBoundedBuffer
+/ copy BoundedBuffer to BrokenBoundedBuffer
 
 x make checkpoint optional (so don't always have to "perform" it)
 
-= introduce FixedBoundedBuffer
+/ introduce FixedBoundedBuffer
 
-= eliminate duplication between BrokenBoundedBufferTest and FixedBoundedBufferTest
+/ eliminate duplication between BrokenBoundedBufferTest and FixedBoundedBufferTest
 
-= test-drive fixing the notify/notifyAll problems in examples using
+/ test-drive fixing the notify/notifyAll problems in examples using
   "checkpoint" method
   <http://c2.com/cgi/wiki?ExtremeProgrammingChallengeFourteenTheBug>
 
-= try putting TestThreads in a ThreadGroup so that letRun can let them all run
+/ try putting TestThreads in a ThreadGroup so that letRun can let them all run
 
-= discuss blocking with unrelated threads on [[I object
+/ discuss blocking with unrelated threads on [[I object
 
 - review/fix other notify() call in BoundedBuffer
 
-= fix wait() not in while in Semaphore
+/ fix wait() not in while in Semaphore
 
-= add jar and javadoc Ant targets
+/ add jar and javadoc Ant targets
 
-= include pre-built jar and javadoc in distribution
+/ include pre-built jar and javadoc in distribution
 
-= link to javadoc from home page
+/ link to javadoc from home page
 
 - if exception is thrown from action, rethrow it from assertComplete
   (instead of calling printStackTrace)
@@ -64,11 +66,11 @@ x make checkpoint optional (so don't always have to "perform" it)
 - if InterruptedException is thrown from action, allow that fact to
   be asserted
 
-= include thread and action name in assertions
+/ include thread and action name in assertions
 
 - rewrite overview on home page
 
-= link to dist files from home page
+/ link to dist files from home page
 
 - consider how to test timed-wait stuff in Semaphore
 
