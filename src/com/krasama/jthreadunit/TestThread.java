@@ -25,7 +25,6 @@ import java.lang.management.ThreadMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
 /**
