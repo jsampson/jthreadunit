@@ -1,8 +1,9 @@
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
+
+import org.jthreadunit.TestThread;
 
 import junit.framework.TestCase;
 
-import com.krasama.jthreadunit.TestThread;
 
 public class ExceptionTest extends TestCase
 {

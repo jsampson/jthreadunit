@@ -99,7 +99,7 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 / register jthreadunit.org
 
-- change package to org.jthreadunit
+/ change package to org.jthreadunit
 
 - change to Maven build
 

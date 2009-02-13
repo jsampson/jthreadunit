@@ -16,11 +16,44 @@
 // along with JThreadUnit; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
 
-public interface BoundedBuffer
+import org.jthreadunit.TestThread;
+
+public class Semaphore
 {
-    public void put(Object x) throws InterruptedException;
+    private int currentState;
 
-    public Object take() throws InterruptedException;
+    public Semaphore(int initialState)
+    {
+        if (initialState < 0)
+        {
+            throw new IllegalArgumentException(
+                    "Semaphore initial state must not be negative");
+        }
+
+        this.currentState = initialState;
+    }
+
+    public synchronized void down() throws InterruptedException
+    {
+        while (currentState == 0)
+        {
+            wait();
+        }
+
+        currentState--;
+    }
+
+    public synchronized void up() throws InterruptedException
+    {
+        currentState++;
+        TestThread.checkpoint("notify");
+        notify();
+    }
+
+    public synchronized int state()
+    {
+        return currentState;
+    }
 }

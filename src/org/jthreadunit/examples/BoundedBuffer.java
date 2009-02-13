@@ -16,23 +16,11 @@
 // along with JThreadUnit; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-public class AllTests
+public interface BoundedBuffer
 {
-    public static Test suite()
-    {
-        TestSuite testSuite = new TestSuite();
-        testSuite.addTestSuite(SemaphoreTest.class);
-        testSuite.addTestSuite(BrokenBoundedBufferTest.class);
-        testSuite.addTestSuite(FixedBoundedBufferTest.class);
-        testSuite.addTestSuite(ReadWriteLockTest.class);
-        testSuite.addTestSuite(SynchronizedBlockTest.class);
-        testSuite.addTestSuite(AssertionTest.class);
-        testSuite.addTestSuite(ExceptionTest.class);
-        return testSuite;
-    }
+    public void put(Object x) throws InterruptedException;
+
+    public Object take() throws InterruptedException;
 }

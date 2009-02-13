@@ -16,44 +16,48 @@
 // along with JThreadUnit; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
 
-import com.krasama.jthreadunit.TestThread;
+import org.jthreadunit.TestThread;
 
-public class Semaphore
+public class FixedBoundedBuffer implements BoundedBuffer
 {
-    private int currentState;
+    private Object[] buffer;
+    private int putAt, takeAt, occupied;
 
-    public Semaphore(int initialState)
+    public FixedBoundedBuffer()
     {
-        if (initialState < 0)
-        {
-            throw new IllegalArgumentException(
-                    "Semaphore initial state must not be negative");
-        }
-
-        this.currentState = initialState;
+        this(4);
     }
 
-    public synchronized void down() throws InterruptedException
+    public FixedBoundedBuffer(int capacity)
     {
-        while (currentState == 0)
+        buffer = new Object[capacity];
+    }
+
+    public synchronized void put(Object x) throws InterruptedException
+    {
+        while (occupied == buffer.length)
         {
             wait();
         }
-
-        currentState--;
-    }
-
-    public synchronized void up() throws InterruptedException
-    {
-        currentState++;
-        TestThread.checkpoint("notify");
+        TestThread.checkpoint("putNotify");
         notify();
+        ++occupied;
+        putAt %= buffer.length;
+        buffer[putAt++] = x;
     }
 
-    public synchronized int state()
+    public synchronized Object take() throws InterruptedException
     {
-        return currentState;
+        while (occupied == 0)
+        {
+            wait();
+        }
+        TestThread.checkpoint("takeNotify");
+        notifyAll();
+        --occupied;
+        takeAt %= buffer.length;
+        return buffer[takeAt++];
     }
 }

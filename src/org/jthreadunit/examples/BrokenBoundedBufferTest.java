@@ -16,9 +16,9 @@
 // along with JThreadUnit; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
 
-import com.krasama.jthreadunit.TestThread;
+import org.jthreadunit.TestThread;
 
 public class BrokenBoundedBufferTest extends BoundedBufferTest
 {

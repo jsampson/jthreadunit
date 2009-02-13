@@ -16,11 +16,12 @@
 // along with JThreadUnit; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.krasama.jthreadunit.examples;
+package org.jthreadunit.examples;
+
+import org.jthreadunit.TestThread;
 
 import junit.framework.TestCase;
 
-import com.krasama.jthreadunit.TestThread;
 
 public class SynchronizedBlockTest extends TestCase
 {
