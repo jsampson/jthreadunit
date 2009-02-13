@@ -94,7 +94,10 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - detect if two locks are ever acquired in opposite order
 
-- register jthreadunit.org
+- allow defining doXYZ methods in test class rather than requiring an inner
+  class
+
+/ register jthreadunit.org
 
 - change package to org.jthreadunit
 
