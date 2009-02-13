@@ -74,10 +74,10 @@
 
         <h2>Caveats</h2>
 
-        <p>JThreadUnit requires Java 1.5, which is still in beta. It uses the
+        <p>JThreadUnit requires Java 5. It uses the
         new <tt>java.lang.management</tt> facilities (specifically,
-        <tt>ThreadMBean</tt>) to check whether a thread is blocked or running.
-        My original approach, prior to Java 1.5, simply did a timed wait for a
+        <tt>ThreadMXBean</tt>) to check whether a thread is blocked or running.
+        My original approach, prior to Java 5, simply did a timed wait for a
         signal from the thread; if the signal fired within the wait time, the
         thread was obviously not blocked, and if the signal did not fire within
         that time, the thread was presumed to be blocked. This was both slow

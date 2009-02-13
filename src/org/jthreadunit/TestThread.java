@@ -434,6 +434,8 @@ public abstract class TestThread extends Thread
                 "Action method " + methodName + " should be void");
         }
 
+        method.setAccessible(true);
+
         return method;
     }
 

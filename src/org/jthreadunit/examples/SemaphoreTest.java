@@ -207,7 +207,7 @@ public class SemaphoreTest extends TestCase
         }
     }
 
-    public class SemaphoreTestThread extends TestThread
+    private class SemaphoreTestThread extends TestThread
     {
         public SemaphoreTestThread(ThreadGroup group, String name)
         {

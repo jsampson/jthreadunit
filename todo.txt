@@ -74,9 +74,11 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - consider how to test timed-wait stuff in Semaphore
 
-- remove "beta" comment about Java 1.5
+/ remove "beta" comment about Java 1.5
 
-- document need to make TestThread subclasses public
+x document need to make TestThread subclasses public
+
+/ eliminate need to make TestThread subclasses public
 
 - move reflection code out so that any problems get raised in the calling
   thread before sending the action to the TestThread
@@ -103,8 +105,11 @@ x make checkpoint optional (so don't always have to "perform" it)
 
 - change to Maven build
 
-- deploy docs & jar on jthreadunit.org
+- deploy docs & jar on jthreadunit.org and link to GitHub (and change
+  index.html to reflect new location)
 
 - deploy jar to Maven central repository
 
 - update SourceForge page to point to jthreadunit.org and GitHub
+
+- mention and compare MulithreadedTestCase in docs
