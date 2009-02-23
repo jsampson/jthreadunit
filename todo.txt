@@ -66,6 +66,21 @@ x make checkpoint optional (so don't always have to "perform" it)
 - if InterruptedException is thrown from action, allow that fact to
   be asserted
 
+- if exception thrown from action, throw AssertionFailedError from performAction
+  (or assertStillBlocked) with that exception as its cause
+
+- allow assert that an exception *should* be thrown
+
+- don't throw InterruptedException from TestThread.checkpoint(); however, make
+  sure kill() still works
+
+- detailed exception cases:
+    - assertComplete (called from performAction, ...?) when exception thrown
+    - assertNotComplete (call from ...?) when exception thrown
+    - actionShouldThrow (new method) when exception thrown
+    - actionShouldThrow (new method) when exception not thrown
+    - what about Error, NoSuchMethodException, ... in action()?
+
 / include thread and action name in assertions
 
 - rewrite overview on home page
@@ -81,15 +96,8 @@ x document need to make TestThread subclasses public
 / eliminate need to make TestThread subclasses public
 
 - move reflection code out so that any problems get raised in the calling
-  thread before sending the action to the TestThread
-
-- if exception thrown from action, throw AssertionFailedError from performAction
-  (or assertStillBlocked) with that exception as its cause
-
-- allow assert that an exception *should* be thrown
-
-- don't throw InterruptedException from TestThread.checkpoint(); however, make
-  sure kill() still works
+  thread before sending the action to the TestThread (and don't call
+  printStackTrace in run())
 
 - add deadlock detection using findMonitorDeadlockedThreads (Java 5) and/or
   findDeadlockedThreads (Java 6) 
@@ -98,6 +106,9 @@ x document need to make TestThread subclasses public
 
 - allow defining doXYZ methods in test class rather than requiring an inner
   class
+
+- making starting & killing threads more transparent (ThreadTestCase abstract
+  class?)
 
 / register jthreadunit.org
 
